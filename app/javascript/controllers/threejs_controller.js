@@ -1,11 +1,12 @@
 import { Controller } from "@hotwired/stimulus";
 import * as THREE from "three";
-// import { OrbitControls } from "three/examples";
+import { OrbitControls } from "three/examples"; // as added permanently to importmaps - original: import { OrbitControls } from "https://ga.jspm.io/npm:three@0.157.0/examples/jsm/controls/OrbitControls.js";
 
 // Connects to data-controller="threejs"
 export default class extends Controller {
   connect() {
     console.log("Hello, Stimulus!", this.element);
+    // console.log(THREE.OrbitControls);
 
     this.initThreeJS();
 
@@ -42,6 +43,7 @@ export default class extends Controller {
     this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
     this.renderer = new THREE.WebGLRenderer();
+    this.renderer.setClearColor(0xFFFFFF); // 0xFFFFFF = white
     this.sizes = {
       width: window.innerWidth,
       height: window.innerHeight
@@ -58,11 +60,18 @@ export default class extends Controller {
 
     this.originCube = this.createCube(0,0,0);
 
-    this.scene.add( this.originCube );
+    this.gridHelper = new THREE.GridHelper( 10, 10 );
+
+    this.scene.add(
+      this.originCube,
+      this.gridHelper );
 
     this.camera.position.z = 5;
 
     this.renderer.render( this.scene, this.camera );
+
+    /** Orbit Controls */
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement); // needs to be renderer instead of canvas on Rails
 
     this.animate();
   }
