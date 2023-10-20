@@ -1,0 +1,11 @@
+<%# view for all photos %>
+<%= content_tag(:canvas, "", data: {controller: "threejs"}) %>
+
+<main>
+  <h1>Photos#index</h1>
+  <div>
+    <% @photos.each do |photo| %>
+      <p><%= photo.title %></p>
+    <% end %>
+  </div>
+</main>
