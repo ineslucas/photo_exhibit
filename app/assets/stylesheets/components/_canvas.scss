@@ -1,0 +1,25 @@
+// all CSS classes related to viewport & subsequently, canvas
+
+html,
+body
+{
+    overflow: hidden;
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  outline: none;
+}
+
+main {
+  position: absolute;
+  z-index: 1; // so that text sits above canvas
+}
+
+*
+{
+    margin: 0;
+    padding: 0;
+}

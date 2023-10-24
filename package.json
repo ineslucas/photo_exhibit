@@ -1,0 +1,8 @@
+{
+  "name": "photo_exhibit",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:ineslucas/photo_exhibit.git",
+  "author": "ines lucas <lucasinesmaria@gmail.com>",
+  "license": "MIT"
+}
