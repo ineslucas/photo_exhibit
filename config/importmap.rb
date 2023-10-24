@@ -9,3 +9,4 @@ pin "bootstrap", to: "bootstrap.min.js", preload: true
 pin "@popperjs/core", to: "popper.js", preload: true
 pin "three", to: "https://ga.jspm.io/npm:three@0.157.0/build/three.module.js"
 pin "three/examples", to: "https://ga.jspm.io/npm:three@0.157.0/examples/jsm/controls/OrbitControls.js";
+pin "lil-gui", to: "https://cdn.jsdelivr.net/npm/lil-gui@0.18/+esm";
