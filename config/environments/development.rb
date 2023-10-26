@@ -3,6 +3,8 @@ require "active_support/core_ext/integer/time"
 Rails.application.configure do
   config.action_mailer.default_url_options = { host: "http://localhost:3000" }
   # Settings specified here will take precedence over those in config/application.rb.
+  # config/environments/development.rb and config/environments/production.rb
+  config.active_storage.variant_processor = :vips # or :mini_magick to process images 
 
   # In the development environment your application's code is reloaded any time
   # it changes. This slows down response time but is perfect for development
