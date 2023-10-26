@@ -4,17 +4,23 @@
   <% if @photo.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@photo.errors.count, "error") %> prohibited this photo from being saved:</h2>
+
       <ul>
-      <% @photo.errors.full_messages.each do |message| %>
+      <% @photo.errors.full_messages.each do |message| %> <%# temp note: that deanin does it a little differently here%>
         <li><%= message %></li>
       <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div class="field">
+  <div class="field"> <%# temp note: undefined class tbc%>
     <%= form.label :title %>
     <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :image %>
+    <%= form.file_field :image %>
   </div>
 
   <div class="field">
