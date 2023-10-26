@@ -3,6 +3,8 @@ require "active_support/core_ext/integer/time"
 Rails.application.configure do
   config.action_mailer.default_url_options = { host: "http://TODO_PUT_YOUR_DOMAIN_HERE" }
   # Settings specified here will take precedence over those in config/application.rb.
+  # temp note: I will have to set up a place where my images are stored in production - Active Storage supports various services like :local disk, Amazon S3, Google Cloud Storage, or Microsoft Azure Storage.
+  # config.active_storage.service = :your_production_service
 
   # Code is not reloaded between requests.
   config.cache_classes = true
