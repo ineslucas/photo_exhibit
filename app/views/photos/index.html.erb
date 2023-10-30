@@ -1,5 +1,5 @@
-<%# view for all photos %>
-<%= content_tag(:canvas, "", data: {controller: "threejs"}) %>
+<%# View for all instances of Photo. %>
+<%= content_tag(:canvas, "", data: { controller: "threejs", images: @photos.map { |photo| rails_blob_url(photo.image) } }) %>
 
 <main>
   <h1>Photos#index</h1>
