@@ -1,5 +1,3 @@
-// Cube is commented but not deleted to show how to create a three.js cube in Rails
-
 import { Controller } from "@hotwired/stimulus";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples"; // as added permanently to importmaps - original: import { OrbitControls } from "https://ga.jspm.io/npm:three@0.157.0/examples/jsm/controls/OrbitControls.js";
@@ -8,11 +6,9 @@ import GUI from 'lil-gui';
 // Connects to data-controller="threejs"
 export default class extends Controller {
   connect() {
-    console.log("Hello, Stimulus!", this.element);
-    // console.log(THREE.OrbitControls);
-    // console.log(GUI);
-
+    console.log("Hello, Stimulus!", this.element); // console.log(THREE.OrbitControls); // console.log(GUI);
     this.initThreeJS();
+    this.createCircle();
 
     window.addEventListener('resize', () => {
       console.log('window has been resized');
@@ -45,10 +41,9 @@ export default class extends Controller {
     /** Debug */
     this.gui = new GUI();
 
-    // code to initialize ThreeJS
+    /** Scene, Camera, Renderer */
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-
     this.renderer = new THREE.WebGLRenderer();
     this.renderer.setClearColor(0xFFFFFF); // 0xFFFFFF = white
     this.sizes = {
@@ -58,15 +53,6 @@ export default class extends Controller {
     this.renderer.setSize( this.sizes.width, this.sizes.height );
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // retina display - optimizing for performance, by creating a pixel ratio between own screens' and a maximum of 2
     document.body.appendChild(this.renderer.domElement);
-
-    /** Cube */
-    // this.geometry = new THREE.BoxGeometry();
-    // this.material = new THREE.MeshBasicMaterial( {
-    //   color: 0x00ff00,
-    //   wireframe: false
-    // } );
-
-    // this.originCube = this.createCube(0,0,0);
 
     /** Circle */
     const circleGeometry = new THREE.CircleGeometry( 2, 32 );
@@ -79,7 +65,7 @@ export default class extends Controller {
     // Rotate the circle around the X-axis by ~30 degrees
     this.circle.rotation.x = Math.PI / - 3;
 
-    // To rotate around the Y-axis, uncomment below:
+    // To rotate around the Y-axis, uncomment:
     // this.circle.rotation.y = Math.PI / 4;
 
     /** Add Rectangles around the Circle */
@@ -95,7 +81,6 @@ export default class extends Controller {
     this.axesHelper = new THREE.AxesHelper(5); // 5 = represents the size (length) of the axes
 
     this.scene.add(
-      // this.originCube,
       this.gridHelper,
       this.circle,
       this.axesHelper);
@@ -114,8 +99,8 @@ export default class extends Controller {
     const rectangleHeight = 0.5; // modifying the height of the rectangles
     const rectangleWidth = 1
     const rectangleGeometry = new THREE.PlaneGeometry(rectangleWidth, rectangleHeight);
-    const rectangleMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.DoubleSide }); // ensuring that the material renders on both sides of our 2D plane
-    const rectangles = []; // to store rectangles newly created
+    const rectangleMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.DoubleSide }); // ensures that the material renders on both sides of our 2D plane // where texture will eventually be plugged
+    const rectangles = []; // to store rectangles newly created, this is what gets called in the initThreeJS() function
 
     for (let i = 0; i < numberOfRectangles; i++) { // = we loop as many times as the number of rectangles we want to create
       const theta = (i / numberOfRectangles) * 2 * Math.PI; // angle between each rectangle
@@ -136,13 +121,7 @@ export default class extends Controller {
     return rectangles;
   }
 
-  // createCube(x,y,z) {
-  //   const cube = new THREE.Mesh( this.geometry, this.material );
-  //   cube.position.set(x,y,z);
-  //   return cube;
-  // }
-
-  animate() { // to fix distortion of cube object
+  animate() {
     // This creates a loop that causes the renderer to draw the scene every time the screen is refreshed (typically 60 times per second)
     requestAnimationFrame(this.animate.bind(this));
 
@@ -150,4 +129,3 @@ export default class extends Controller {
     this.renderer.render(this.scene, this.camera);
   }
 }
-

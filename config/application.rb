@@ -23,5 +23,10 @@ module PhotoExhibit
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Added in trying to compile assets & getting the image error solved
+    config.assets.enabled = true
+    config.assets.compile = true
+    config.assets.paths << Rails.root.join('app', 'assets')
   end
 end
