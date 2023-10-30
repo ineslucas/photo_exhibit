@@ -8,6 +8,7 @@ export default class extends Controller {
   connect() {
     console.log("Hello, Stimulus!", this.element); // console.log(THREE.OrbitControls); // console.log(GUI);
     this.initThreeJS();
+    this.createCircle();
 
     window.addEventListener('resize', () => {
       console.log('window has been resized');
