@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus";
 import * as THREE from "three";
-import { OrbitControls } from "three/examples"; // as added permanently to importmaps - original: import { OrbitControls } from "https://ga.jspm.io/npm:three@0.157.0/examples/jsm/controls/OrbitControls.js";
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import GUI from 'lil-gui';
 
 // Connects to data-controller="threejs"
