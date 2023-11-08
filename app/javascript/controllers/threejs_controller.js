@@ -1,14 +1,16 @@
 import { Controller } from "@hotwired/stimulus";
 import * as THREE from "three";
-import { OrbitControls } from "three/examples"; // as added permanently to importmaps - original: import { OrbitControls } from "https://ga.jspm.io/npm:three@0.157.0/examples/jsm/controls/OrbitControls.js";
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import GUI from 'lil-gui';
+import TentImage from "../images/tent.png";
 
 // Connects to data-controller="threejs"
 export default class extends Controller {
   connect() {
     console.log("Hello, Stimulus!", this.element); // console.log(THREE.OrbitControls); // console.log(GUI);
     this.initThreeJS();
-    this.createCircle();
+    // this.createCircle();
+    this.loadTexture();
 
     window.addEventListener('resize', () => {
       console.log('window has been resized');
@@ -34,6 +36,18 @@ export default class extends Controller {
         console.log('leave fullscreen');
         document.exitFullscreen();
       }
+    });
+  }
+
+  loadTexture() {
+    const textureLoader = new THREE.TextureLoader();
+    textureLoader.load(TentImage, (texture) => { // TentImage will be replaced by the path to the digested image file created by esbuild.
+      this.texture = texture; // Store the loaded texture in a variable so we can access it outside of this function
+      this.rectangles.forEach((rectangle) => {
+        rectangle.material.map = this.texture; // Assign the texture to the material of each rectangle
+        rectangle.material.needsUpdate = true; // Telling Three.js that the material has been updated and that it needs to be re-rendered
+      });
+      console.log("Texture loaded!", texture);
     });
   }
 
@@ -70,6 +84,7 @@ export default class extends Controller {
 
     /** Add Rectangles around the Circle */
     this.rectangles = this.addRectanglesToCircle(30, 2); // 8 rectangles, 2 of radius. Storing in a variable so we can access them outside the scope of this function (eg. for UI)
+    this.loadTexture(); // Ensures that if the texture loads after the rectangles are created, it will be applied immediately
 
     /** Debug Variables */
     this.rectangles.forEach((rectangle) => {
@@ -99,7 +114,11 @@ export default class extends Controller {
     const rectangleHeight = 0.5; // modifying the height of the rectangles
     const rectangleWidth = 1
     const rectangleGeometry = new THREE.PlaneGeometry(rectangleWidth, rectangleHeight);
-    const rectangleMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.DoubleSide }); // ensures that the material renders on both sides of our 2D plane // where texture will eventually be plugged
+    const rectangleMaterial = new THREE.MeshBasicMaterial({
+      // color: 0xff0000, // Base color, visible if texture is not loaded
+      side: THREE.DoubleSide, // ensures that the material renders on both sides of our 2D plane
+      map: this.texture || null // Apply the texture if it's already loaded
+    });
     const rectangles = []; // to store rectangles newly created, this is what gets called in the initThreeJS() function
 
     for (let i = 0; i < numberOfRectangles; i++) { // = we loop as many times as the number of rectangles we want to create
