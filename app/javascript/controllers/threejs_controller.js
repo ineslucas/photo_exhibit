@@ -10,8 +10,10 @@ export default class extends Controller {
     console.log("Hello, Stimulus!", this.element); // console.log(THREE.OrbitControls); // console.log(GUI);
     this.initThreeJS();
     this.loadTexture();
-    const imageUrl = this.data.get("image-url");
-    console.log(imageUrl);
+
+    // tiral Nov 27 to delete
+    // const imageUrl = this.data.get("image-url");
+    // console.log(imageUrl);
 
     window.addEventListener('resize', () => {
       console.log('window has been resized');
