@@ -9,7 +9,6 @@ export default class extends Controller {
   connect() {
     console.log("Hello, Stimulus!", this.element); // console.log(THREE.OrbitControls); // console.log(GUI);
     this.initThreeJS();
-    // this.createCircle();
     this.loadTexture();
 
     window.addEventListener('resize', () => {
@@ -39,6 +38,7 @@ export default class extends Controller {
     });
   }
 
+  /** Loading texture from image file */
   loadTexture() {
     const textureLoader = new THREE.TextureLoader();
     textureLoader.load(TentImage, (texture) => { // TentImage will be replaced by the path to the digested image file created by esbuild.

@@ -26,4 +26,6 @@ Rails.application.routes.draw do
 
   # Destroy action
   # delete 'photos/:id', to: 'photos#destroy'
+
+  get 'photos/find/:id', to: 'photos#find_photo', as: 'find_photo'
 end
