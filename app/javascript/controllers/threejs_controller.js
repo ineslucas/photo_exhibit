@@ -10,6 +10,8 @@ export default class extends Controller {
     console.log("Hello, Stimulus!", this.element); // console.log(THREE.OrbitControls); // console.log(GUI);
     this.initThreeJS();
     this.loadTexture();
+    const imageUrl = this.data.get("image-url");
+    console.log(imageUrl);
 
     window.addEventListener('resize', () => {
       console.log('window has been resized');
@@ -152,6 +154,7 @@ export default class extends Controller {
       color: 0xff0000, // Base color, visible if texture is not loaded
       side: THREE.DoubleSide, // ensures that the material renders on both sides of our 2D plane
       map: this.texture || null // Apply the texture if it's already loaded
+      /** 🍓 TODO: Get texture to come from database / back end */
     });
     /** Mesh */
     const singlePhotoDisplay = new THREE.Mesh(singlePhotoDisplayGeometry, singlePhotoDisplayMaterial);

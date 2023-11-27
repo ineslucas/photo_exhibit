@@ -6,7 +6,7 @@
       <p><%= photo.title %></p>
       <p><%= photo.journal_entry %></p>
       <p><%= image_tag(photo.image, style: "width:150px") %></p> <%# temp note: with extra steps + defining a thumbnail method, these can resize properly according to aspect ratio%>
-      <% image_url = url_for(photo.image) if photo.image.attached? %>
+      <%# <% image_url = url_for(photo.image) if photo.image.attached? %>
     <% end %>
   </div>
 </main>
@@ -23,4 +23,19 @@
 }) do %>
 <%# <% end %>
 
+<%# working: %>
 <%= content_tag(:canvas, "", data: {controller: "threejs"}) %>
+
+
+
+
+
+
+<%# trial Nov27 - She Codes - FAIL - needs host to work: %>
+<%# <%= content_tag :canvas, data: { controller: "threejs", image_url: photo.image.url } %>
+
+<%# <% @photos.each do |photo| %>
+  <%# <%= link_to photo.image, class: "photo-link" do %>
+    <%# <%= content_tag :canvas, "", data: { controller: "threejs", image_url: photo.image.url } %>
+  <%# <% end %>
+<%# <% end %>
