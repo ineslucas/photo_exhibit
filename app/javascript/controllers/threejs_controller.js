@@ -39,7 +39,7 @@ export default class extends Controller {
   }
 
   /** Loading texture from image file */
-  loadTexture() {
+  loadTexture() { // being called 2x, once in initThreeJS() and once in connect()
     const textureLoader = new THREE.TextureLoader();
     textureLoader.load(TentImage, (texture) => { // TentImage will be replaced by the path to the digested image file created by esbuild.
       this.texture = texture; // Store the loaded texture in a variable so we can access it outside of this function
@@ -91,6 +91,9 @@ export default class extends Controller {
       this.gui.add(rectangle.rotation, 'y').min(- 3).max(3).step(0.01).name('rotationY');
     });
 
+    /** Single Photo Display */
+    this.singlePhotoDisplay = this.createSinglePhotoDisplay();
+
     /** Grid & Axis Helper */
     this.gridHelper = new THREE.GridHelper( 10, 10 );
     this.axesHelper = new THREE.AxesHelper(5); // 5 = represents the size (length) of the axes
@@ -98,7 +101,8 @@ export default class extends Controller {
     this.scene.add(
       this.gridHelper,
       this.circle,
-      this.axesHelper);
+      this.axesHelper,
+      this.singlePhotoDisplay);
 
     this.camera.position.z = 5;
 
@@ -138,6 +142,20 @@ export default class extends Controller {
       rectangles.push(rectangle); // Adding the rectangle to the rectangles array, so that rectangles array can be accessed outside
     }
     return rectangles;
+  }
+
+  createSinglePhotoDisplay() {
+    /** Geometry */
+    const singlePhotoDisplayGeometry = new THREE.PlaneGeometry(1*2, 0.5*2);
+    /** Material */
+    const singlePhotoDisplayMaterial = new THREE.MeshBasicMaterial({
+      color: 0xff0000, // Base color, visible if texture is not loaded
+      side: THREE.DoubleSide, // ensures that the material renders on both sides of our 2D plane
+      map: this.texture || null // Apply the texture if it's already loaded
+    });
+    /** Mesh */
+    const singlePhotoDisplay = new THREE.Mesh(singlePhotoDisplayGeometry, singlePhotoDisplayMaterial);
+    return singlePhotoDisplay;
   }
 
   animate() {
