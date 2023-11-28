@@ -6,11 +6,21 @@
       <p><%= photo.title %></p>
       <p><%= photo.journal_entry %></p>
       <p><%= image_tag(photo.image, style: "width:150px") %></p> <%# temp note: with extra steps + defining a thumbnail method, these can resize properly according to aspect ratio%>
-      <%# <% image_url = url_for(photo.image) if photo.image.attached? %>
+      <%# DELETE <% image_url = url_for(photo.image) if photo.image.attached? %>
+      <%# Adding a hidden field called :image_urls, which contains the serialized JSON representation of the @photos array with the image URLs generated using cl_image_path. %>
       <%= cl_image_tag photo.image.key, height: 300, width: 400, crop: :fill %>
     <% end %>
+    <%= hidden_field_tag :image_urls, @photos.map { |photo| cl_image_path(photo.image.key, height: 300, width: 400, crop: :fill) }.to_json %>
   </div>
 </main>
+
+<%# working: %>
+<%= content_tag(:canvas, "", data: {controller: "threejs", threejs_target: "canvas" }) %>
+
+
+
+
+
 
 <%# TO BE DELETED: %>
 <%# <%= content_tag(:canvas, "", data: {
@@ -23,13 +33,6 @@
   # images: @photos.map { |photo| rails_blob_url(photo.image) } # 🍓 this works! WHY? because we're using ActiveStorage, which is a Rails library that allows us to attach files to Active Record objects. It also provides a helper method called rails_blob_url that returns a URL for a given blob. We can use this method to get the URL for each photo's image.
 }) do %>
 <%# <% end %>
-
-<%# working: %>
-<%= content_tag(:canvas, "", data: {controller: "threejs"}) %>
-
-
-
-
 
 
 <%# trial Nov27 - She Codes - FAIL - needs host to work: %>

@@ -6,14 +6,25 @@ import TentImage from "../images/tent.png";
 
 // Connects to data-controller="threejs"
 export default class extends Controller {
+  static targets = ['canvas'];
+
   connect() {
     console.log("Hello, Stimulus!", this.element); // console.log(THREE.OrbitControls); // console.log(GUI);
     this.initThreeJS();
     this.loadTexture();
 
-    // tiral Nov 27 to delete
-    // const imageUrl = this.data.get("image-url");
-    // console.log(imageUrl);
+    const canvasElement = this.canvasTarget;
+    console.log("Logging the canvas", canvasElement);
+    console.log("Logging the canvas", this.canvasTarget);
+    const imageUrlsInput = document.querySelector('input[name="image_urls"]');
+    const imageURLs = JSON.parse(imageUrlsInput.value);
+
+    // iterating through the imageURLs and create a texture for each image:
+    imageURLs.forEach((url) => {
+      console.log(url);
+      // const texture = new THREE.TextureLoader().load(url);
+      // Use the texture to create a material and so on.
+    });
 
     window.addEventListener('resize', () => {
       console.log('window has been resized');
