@@ -1,45 +1,15 @@
-<%# View for all instances of Photo. Photos#index%>
+<%# View for all instances of Photo.%>
 
 <main>
   <div>
     <% @photos.each do |photo| %>
       <p><%= photo.title %></p>
       <p><%= photo.journal_entry %></p>
-      <p><%= image_tag(photo.image, style: "width:150px") %></p> <%# temp note: with extra steps + defining a thumbnail method, these can resize properly according to aspect ratio%>
-      <%# DELETE <% image_url = url_for(photo.image) if photo.image.attached? %>
-      <%# Adding a hidden field called :image_urls, which contains the serialized JSON representation of the @photos array with the image URLs generated using cl_image_path. %>
       <%= cl_image_tag photo.image.key, height: 300, width: 400, crop: :fill %>
     <% end %>
+    <%# ⭐️ Adding a hidden field called :image_urls, which contains the serialized JSON representation of the @photos array with the image URLs generated using cl_image_path. %>
     <%= hidden_field_tag :image_urls, @photos.map { |photo| cl_image_path(photo.image.key, height: 300, width: 400, crop: :fill) }.to_json %>
   </div>
 </main>
 
-<%# working: %>
 <%= content_tag(:canvas, "", data: {controller: "threejs", threejs_target: "canvas" }) %>
-
-
-
-
-
-
-<%# TO BE DELETED: %>
-<%# <%= content_tag(:canvas, "", data: {
-  controller: "threejs",
-  threejs_url: image_url, # "threejs" because it needs to match the name of the Stimulus controller. image_url has been defined above.
-  images_id: photo.id
-  #loading image onto the scene (did deanin also added through form!? YES - 8:24 video)
-  # image: photo.image
-  # image: image
-  # images: @photos.map { |photo| rails_blob_url(photo.image) } # 🍓 this works! WHY? because we're using ActiveStorage, which is a Rails library that allows us to attach files to Active Record objects. It also provides a helper method called rails_blob_url that returns a URL for a given blob. We can use this method to get the URL for each photo's image.
-}) do %>
-<%# <% end %>
-
-
-<%# trial Nov27 - She Codes - FAIL - needs host to work: %>
-<%# <%= content_tag :canvas, data: { controller: "threejs", image_url: photo.image.url } %>
-
-<%# <% @photos.each do |photo| %>
-  <%# <%= link_to photo.image, class: "photo-link" do %>
-    <%# <%= content_tag :canvas, "", data: { controller: "threejs", image_url: photo.image.url } %>
-  <%# <% end %>
-<%# <% end %>

@@ -5,7 +5,7 @@ class PhotosController < ApplicationController
     @photos = Photo.all
   end
 
-  def new #view, which I eventually want to turn into a modal
+  def new #view, which I eventually want to turn into a modal, using Turbo Frames and Streams
     @photo = Photo.new
   end
 
@@ -27,8 +27,9 @@ class PhotosController < ApplicationController
 
   def edit
     @photo = Photo.find(params[:id])
+    # TODO - readd once I have users - inital 3 photos appear to be under a different user
     # if @photo.user != current_user
-    #   redirect_to photos_path, notice: "You can only edit your own photos."
+    #  redirect_to photos_path, notice: "You can only edit your own photos."
     # end
   end
 
@@ -38,7 +39,7 @@ class PhotosController < ApplicationController
     redirect_to photos_path, notice: "Photo was successfully updated."
   end
 
-  # TBD - if I need this
+  # TBD - determine if still needed
   def find_photo
     @photo = Photo.find(params[:id])
   end

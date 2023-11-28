@@ -1,2 +1,6 @@
-<h1>Photos#show</h1>
+<h2> Photos#show to be rebuilt:</h2>
 
+<h1><%= @photo.title %></h1>
+<p><%= @photo.journal_entry %></p>
+<p><%= image_tag(@photo.image, style: "width:150px") %></p> <%# temp note: with extra steps + defining a thumbnail method, these can resize properly according to aspect ratio%>
+<%= cl_image_tag @photo.image.key, height: 300, width: 400, crop: :fill %>
