@@ -10,6 +10,8 @@ export default class extends Controller {
 
   connect() {
     console.log("Hello, Stimulus!", this.element); // console.log(THREE.OrbitControls); // console.log(GUI);
+    this.handleResize();
+    this.handleFullscreen();
     this.initThreeJS();
     this.loadTexture();
 
@@ -25,7 +27,9 @@ export default class extends Controller {
       // const texture = new THREE.TextureLoader().load(url);
       // Use the texture to create a material and so on.
     });
+  }
 
+  handleResize() {
     window.addEventListener('resize', () => {
       console.log('window has been resized');
 
@@ -41,7 +45,9 @@ export default class extends Controller {
       this.renderer.setSize(this.sizes.width, this.sizes.height);
       this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     });
+  }
 
+  handleFullscreen() {
     window.addEventListener('dblclick', () => {
       if(!document.fullscreenElement) {
         console.log('go fullscreen');
