@@ -27,9 +27,9 @@ class PhotosController < ApplicationController
 
   def edit
     @photo = Photo.find(params[:id])
-    if @photo.user != current_user
-      redirect_to photos_path, notice: "You can only edit your own photos."
-    end
+    # if @photo.user != current_user
+    #   redirect_to photos_path, notice: "You can only edit your own photos."
+    # end
   end
 
   def update
