@@ -21,6 +21,23 @@ class PhotosController < ApplicationController
     end
   end
 
+  def show
+    @photo = Photo.find(params[:id])
+  end
+
+  def edit
+    @photo = Photo.find(params[:id])
+    if @photo.user != current_user
+      redirect_to photos_path, notice: "You can only edit your own photos."
+    end
+  end
+
+  def update
+    @photo = Photo.find(params[:id])
+    @photo.update(photo_params)
+    redirect_to photos_path, notice: "Photo was successfully updated."
+  end
+
   # TBD - if I need this
   def find_photo
     @photo = Photo.find(params[:id])
