@@ -13,17 +13,19 @@ Rails.application.routes.draw do
   post 'photos', to: 'photos#create'
 
   # Show action
-  # get 'photos/:id', to: 'photos#show', as: 'photo'
+  get 'photos/:id', to: 'photos#show', as: 'photo'
 
   # Edit action
-  # get 'photos/:id/edit', to: 'photos#edit', as: 'edit_photo'
+  get 'photos/:id/edit', to: 'photos#edit'
 
   # Update action
-  # patch 'photos/:id', to: 'photos#update'
+  patch 'photos/:id', to: 'photos#update'
 
   # Additional route for update action to support PUT
   # put 'photos/:id', to: 'photos#update'
 
   # Destroy action
   # delete 'photos/:id', to: 'photos#destroy'
+
+  get 'photos/find/:id', to: 'photos#find_photo', as: 'find_photo'
 end

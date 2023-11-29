@@ -4,7 +4,7 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: "http://localhost:3000" }
   # Settings specified here will take precedence over those in config/application.rb.
   # config/environments/development.rb and config/environments/production.rb
-  config.active_storage.variant_processor = :vips # or :mini_magick to process images 
+  config.active_storage.variant_processor = :vips # or :mini_magick to process images
 
   # In the development environment your application's code is reloaded any time
   # it changes. This slows down response time but is perfect for development
@@ -36,8 +36,8 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
-  # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :local
+  # Store uploaded files on the Cloudinary file system (see config/storage.yml for options).
+  config.active_storage.service = :cloudinary # could be :local, :cloudinary, :amazon, etc.
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
