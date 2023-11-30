@@ -77,6 +77,7 @@ export default class extends Controller {
 
       // Calling addToScene inside the callback to ensure the scene is updated after the texture is loaded.
       this.addToScene();
+      this.addToPictureScene();
     });
   }
 
@@ -110,6 +111,11 @@ export default class extends Controller {
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // retina display - optimizing for performance, by creating a pixel ratio between own screens' and a maximum of 2
     document.body.appendChild(this.renderer.domElement);
 
+    /** Scene with SinglePhotoDisplay */
+    this.pictureScene = new THREE.Scene();
+    this.pictureCamera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+    this.pictureCamera.position.z = 5; // similar as (main) camera
+
     /** Circle */
     const circleGeometry = new THREE.CircleGeometry( 2, 32 );
     this.wireframeMaterial = new THREE.MeshBasicMaterial( {
@@ -126,8 +132,7 @@ export default class extends Controller {
 
     /** Add Rectangles around the Circle */
     this.rectangles = this.addRectanglesToCircle(30, 2); // 8 rectangles, 2 of radius. Storing in a variable so we can access them outside the scope of this function (eg. for UI)
-    this.loadTextureFromImage(); // Ensures that if the texture loads after the rectangles are created, it will be applied immediately
-
+    
     /** Debug Variables */
     this.rectangles.forEach((rectangle) => {
       this.gui.add(rectangle.rotation, 'y').min(- 3).max(3).step(0.01).name('rotationY');
@@ -144,6 +149,10 @@ export default class extends Controller {
 
     /** Orbit Controls */
     this.controls = new OrbitControls(this.camera, this.renderer.domElement); // needs to be renderer instead of canvas on Rails
+    /** Lock the vertical (polar) angle to prevent tilting */
+    this.controls.minPolarAngle = Math.PI / 2; // Set to the current horizontal angle
+    this.controls.maxPolarAngle = Math.PI / 2; // Same as minPolarAngle to lock it
+    this.controls.enableZoom = false; // Disable zooming
 
     this.animate();
   }
@@ -152,10 +161,13 @@ export default class extends Controller {
     this.scene.add(
       this.gridHelper,
       this.circle,
-      this.axesHelper,
-      this.singlePhotoDisplay); // Ensure this is only added after the texture is loaded
+      this.axesHelper);
 
-    this.renderer.render( this.scene, this.camera );
+    this.renderer.render( this.scene, this.camera ); // TBC see if this is needed or if addToPictureScene is also needs it
+  }
+
+  addToPictureScene() {
+    this.pictureScene.add(this.singlePhotoDisplay); // Ensure this is only added after the texture is loaded
   }
 
   addRectanglesToCircle(numberOfRectangles, circleRadius) {
@@ -185,6 +197,7 @@ export default class extends Controller {
       this.circle.add(rectangle); // Adding the rectangle as a child of the circle. This means that if we move or rotate the circle, the rectangles will follow its transformation as they're considered part of the circle in the scene hierarchy.
       rectangles.push(rectangle); // Adding the rectangle to the rectangles array, so that rectangles array can be accessed outside
     }
+
     return rectangles;
   }
 
@@ -199,17 +212,25 @@ export default class extends Controller {
       side: THREE.DoubleSide, // ensures that the material renders on both sides of our 2D plane
       map: this.mainTextureOnDisplay || null // Ensuring the texture is loaded before assigning it to the material happens in the loadImageURLs() function
     });
-    /** Mesh */
+    /** Mesh & effectively creating the object */
     const singlePhotoDisplay = new THREE.Mesh(singlePhotoDisplayGeometry, singlePhotoDisplayMaterial);
+
+    /** Positioning it fixed at the center of the scene */
+    singlePhotoDisplay.position.set(0, 0, 0);
+    singlePhotoDisplay.rotation.set(0, 0, 0);
+
     console.log("maintextureondisplay from create single photo display function", this.mainTextureOnDisplay); // This console log is too quick, it's logging before the texture is loaded, that's why it's undefined
     return singlePhotoDisplay;
   }
 
   animate() {
-    // This creates a loop that causes the renderer to draw the scene every time the screen is refreshed (typically 60 times per second)
+    // Creating a loop that causes the renderer to draw the scene every time the screen is refreshed (typically 60 times per second)
     requestAnimationFrame(this.animate.bind(this));
 
-    // Render the scene with the camera
+    // Render the main scene with orbit controls
     this.renderer.render(this.scene, this.camera);
+
+    // Render the picture scene without orbit controls
+    // this.renderer.render(this.pictureScene, this.pictureCamera);
   }
 }
