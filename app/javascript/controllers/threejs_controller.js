@@ -12,6 +12,7 @@ export default class extends Controller {
     this.handleResize();
     this.handleFullscreen();
     this.rectangles = [];
+    this.thetaValues = [];
     this.initThreeJS();
     this.loadImageURLs();
   }
@@ -96,7 +97,7 @@ export default class extends Controller {
       this.mouse.y = - (event.clientY / this.sizes.height) * 2 + 1;
     });
 
-    /** Which rectangle am I clicking on?: */
+    /** Which rectangle am I clicking on? Update singlePhotoDisplay accordingly */
     window.addEventListener('click', () => {
       if (this.currentIntersect) {
         // Iterate through each object in the rectangles array
@@ -173,6 +174,7 @@ export default class extends Controller {
 
     for (let i = 0; i < numberOfRectangles; i++) { // = we loop as many times as the number of rectangles we want to create
       const theta = (i / numberOfRectangles) * 2 * Math.PI; // angle between each rectangle
+      this.thetaValues.push(theta); // to be used in the position and rotation of each photo on click
 
       const rectangleMaterial = new THREE.MeshBasicMaterial({
         side: THREE.DoubleSide,
@@ -238,14 +240,20 @@ export default class extends Controller {
 
     /** Response to Hovering */
     if (this.intersects.length > 0) {
-      this.intersects[0].object.material.color.set(0xff0000); // Red
-      // this.intersects[0].object.position.x = -10;
+      const hoveredRectangle = this.intersects[0].object;
+      const index = this.rectangles.indexOf(hoveredRectangle); // "At what position (index) in the this.rectangles array is the hoveredRectangle located?"
+      const theta = this.thetaValues[index]; // Get stored theta value for the hovered rectangle
+      hoveredRectangle.position.x = (2.5 + 0.5) * Math.sin(theta);
+      hoveredRectangle.position.y = (2.5 + 0.5) * Math.cos(theta);
+      // hoveredRectangle.material.color.set(0xff0000); // Red
+
     } else {
       // When not hovering
-      this.rectangles.forEach(rectangle => {
-        // What needs to happen is that here goes your original position value so that it know where to reset to.
-        rectangle.material.color.set(0xffffff); // Blue
-        // this.intersects[0].object.position.x = 0;
+      this.rectangles.forEach((rectangle, index) => {
+        const theta = this.thetaValues[index];
+        rectangle.position.x = 2.5 * Math.sin(theta); // 2.5 is a harded coded value - the original circleRadius
+        rectangle.position.y = 2.5 * Math.cos(theta);
+        // rectangle.material.color.set(0xffffff); // Blue
       });
     }
 
