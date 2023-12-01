@@ -12,8 +12,11 @@ export default class extends Controller {
     // console.log("Hello, Stimulus!", this.element); // console.log(THREE.OrbitControls); // console.log(GUI);
     this.handleResize();
     this.handleFullscreen();
+    this.rectangles = [];
     this.initThreeJS();
     this.loadImageURLs();
+    console.log("this raycaster", this.raycaster);
+    console.log("this rectangles", this.rectangles);
   }
 
   handleResize() {
@@ -85,40 +88,51 @@ export default class extends Controller {
     /** Debug */
     this.gui = new GUI();
 
-    /** Main Scene, Camera, Renderer */
+    /** Creating Main Scene, Camera, Renderer */
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-    this.renderer = new THREE.WebGLRenderer();
-    this.renderer.setClearColor(0xFFFFFF); // 0xFFFFFF = white
     this.sizes = {
       width: window.innerWidth,
       height: window.innerHeight
-    }
+    };
+
+      /** Cursor */
+      this.mouse = new THREE.Vector2();
+      window.addEventListener('mousemove', (event) => { // callback function - function that gets called (back) when the event happens
+        this.mouse.x = event.clientX / this.sizes.width * 2 - 1; // event.clientX = horizontal position of the mouse on the screen
+        this.mouse.y = - (event.clientY / this.sizes.height) * 2 + 1; // event.clientY = vertical position of the mouse on the screen
+        console.log(this.mouse.x, this.mouse.y);
+      });
+
+    this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+    this.renderer = new THREE.WebGLRenderer();
+    this.renderer.setClearColor(0xFFFFFF); // 0xFFFFFF = white
     this.renderer.setSize( this.sizes.width, this.sizes.height );
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // retina display - optimizing for performance, by creating a pixel ratio between own screens' and a maximum of 2
     document.body.appendChild(this.renderer.domElement);
 
-    /** Scene with SinglePhotoDisplay */
+    /** Creating Scene with SinglePhotoDisplay */
     this.pictureScene = new THREE.Scene();
     this.pictureCamera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
     this.pictureCamera.position.z = 5; // similar as (main) camera
 
-    /** Circle */
-    const circleGeometry = new THREE.CircleGeometry( 2, 32 );
-    this.wireframeMaterial = new THREE.MeshBasicMaterial( {
-      color: 0x00ff00,
-      wireframe: true
-    } );
-    this.circle = new THREE.Mesh( circleGeometry, this.wireframeMaterial );
+    /**
+     * Objects */
 
-    /** Rotate the circle around the X-axis by ~30 degrees */
-    this.circle.rotation.x = Math.PI / - 3;
+      /** Circle */
+      const circleGeometry = new THREE.CircleGeometry( 2, 32 );
+      this.wireframeMaterial = new THREE.MeshBasicMaterial( {
+        color: 0x00ff00,
+        wireframe: true
+      } );
+      this.circle = new THREE.Mesh( circleGeometry, this.wireframeMaterial );
+      this.circle.rotation.x = Math.PI / - 3; /** Rotate the circle around the X-axis by ~30 degrees */
+      // this.circle.rotation.y = Math.PI / 4; /** To rotate around the Y-axis, uncomment: */
 
-    /** To rotate around the Y-axis, uncomment: */
-    // this.circle.rotation.y = Math.PI / 4;
+      /** Single Photo Display */
+      this.singlePhotoDisplay = this.createSinglePhotoDisplay();
 
-    /** Single Photo Display */
-    this.singlePhotoDisplay = this.createSinglePhotoDisplay();
+    /** Raycaster */
+    this.raycaster = new THREE.Raycaster();
 
     /** Grid & Axis Helper */
     this.gridHelper = new THREE.GridHelper( 10, 10 );
@@ -219,5 +233,17 @@ export default class extends Controller {
 
     // Render the picture scene without orbit controls
     // this.renderer.render(this.pictureScene, this.pictureCamera);
+
+    /** Raycaster Animation */
+    this.raycaster.setFromCamera(this.mouse, this.camera) // Raycaster is an object that allows us to detect intersections between rays and objects
+    //console.log("this rectangles", this.rectangles);
+
+    this.intersects = this.raycaster.intersectObjects(this.rectangles);
+    if (this.intersects.length > 0) {
+       console.log("Tntersecting");
+       this.intersects[0].object.material.color.set(0xff0000);
+    }
+
+    /** TBC Animate singlePhotoDisplay to mirror camera */
   }
 }
