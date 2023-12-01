@@ -15,8 +15,6 @@ export default class extends Controller {
     this.rectangles = [];
     this.initThreeJS();
     this.loadImageURLs();
-    console.log("this raycaster", this.raycaster);
-    console.log("this rectangles", this.rectangles);
   }
 
   handleResize() {
@@ -80,7 +78,6 @@ export default class extends Controller {
 
       // Calling addToScene inside the callback to ensure the scene is updated after the texture is loaded.
       this.addToScene();
-      this.addToPictureScene();
     });
   }
 
@@ -98,9 +95,20 @@ export default class extends Controller {
       /** Cursor */
       this.mouse = new THREE.Vector2();
       window.addEventListener('mousemove', (event) => { // callback function - function that gets called (back) when the event happens
-        this.mouse.x = event.clientX / this.sizes.width * 2 - 1; // event.clientX = horizontal position of the mouse on the screen
-        this.mouse.y = - (event.clientY / this.sizes.height) * 2 + 1; // event.clientY = vertical position of the mouse on the screen
-        console.log(this.mouse.x, this.mouse.y);
+        this.mouse.x = event.clientX / this.sizes.width * 2 - 1;
+        this.mouse.y = - (event.clientY / this.sizes.height) * 2 + 1;
+      });
+
+      /** Which rectangle am I clicking on?: */
+      window.addEventListener('click', () => {
+        if (this.currentIntersect) {
+          // Iterate through each object in the rectangles array
+          this.rectangles.forEach((rectangle, index) => {
+            if(this.currentIntersect === rectangle) {
+              console.log(`clicked on rectangle ${index + 1}`);
+            }
+          });
+        }
       });
 
     this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -109,11 +117,6 @@ export default class extends Controller {
     this.renderer.setSize( this.sizes.width, this.sizes.height );
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // retina display - optimizing for performance, by creating a pixel ratio between own screens' and a maximum of 2
     document.body.appendChild(this.renderer.domElement);
-
-    /** Creating Scene with SinglePhotoDisplay */
-    this.pictureScene = new THREE.Scene();
-    this.pictureCamera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-    this.pictureCamera.position.z = 5; // similar as (main) camera
 
     /**
      * Objects */
@@ -156,13 +159,10 @@ export default class extends Controller {
     this.scene.add(
       this.gridHelper,
       this.circle,
-      this.axesHelper);
+      this.axesHelper,
+      this.singlePhotoDisplay);
 
-    this.renderer.render( this.scene, this.camera ); // TBC see if this is needed or if addToPictureScene is also needs it
-  }
-
-  addToPictureScene() {
-    this.pictureScene.add(this.singlePhotoDisplay); // Ensure this is only added after the texture is loaded
+    this.renderer.render( this.scene, this.camera );
   }
 
   addRectanglesToCircle(numberOfRectangles, circleRadius) {
@@ -228,20 +228,41 @@ export default class extends Controller {
     // Creating a loop that causes the renderer to draw the scene every time the screen is refreshed (typically 60 times per second)
     requestAnimationFrame(this.animate.bind(this));
 
-    // Render the main scene with orbit controls
+    /** Render the main scene with orbit controls */
     this.renderer.render(this.scene, this.camera);
-
-    // Render the picture scene without orbit controls
-    // this.renderer.render(this.pictureScene, this.pictureCamera);
 
     /** Raycaster Animation */
     this.raycaster.setFromCamera(this.mouse, this.camera) // Raycaster is an object that allows us to detect intersections between rays and objects
-    //console.log("this rectangles", this.rectangles);
-
     this.intersects = this.raycaster.intersectObjects(this.rectangles);
+
+    /** Response to Hovering */
     if (this.intersects.length > 0) {
-       console.log("Tntersecting");
-       this.intersects[0].object.material.color.set(0xff0000);
+      this.intersects[0].object.material.color.set(0xff0000); // Red
+      // this.intersects[0].object.position.x = -10;
+    } else {
+      // When not hovering
+      this.rectangles.forEach(rectangle => {
+        // What needs to happen is that here goes your original position value so that it know where to reset to.
+        rectangle.material.color.set(0xffffff); // Blue
+        // this.intersects[0].object.position.x = 0;
+      });
+    }
+
+    // How to check if we're hovering over a rectangle:
+    if (this.intersects.length) {
+
+      if (this.currentIntersect === null) { // if right before we weren't hovering over a rectangle,
+        console.log("mouse enter");
+      }
+      this.currentIntersect = this.intersects[0].object;
+
+    } else {
+
+      if (this.currentIntersect) { // if right before there was something inside the currentIntersect variable & now there isn't, it means we just left a rectangle
+        console.log("mouse leave");
+      }
+      this.currentIntersect = null;
+
     }
 
     /** TBC Animate singlePhotoDisplay to mirror camera */
