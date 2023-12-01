@@ -68,7 +68,7 @@ export default class extends Controller {
       this.singlePhotoDisplay.material.needsUpdate = true; // Telling Three.js that the material has been updated and that it needs to be re-rendered.
 
       /** Creating Rectangles */
-      this.rectangles = this.addRectanglesToCircle(this.imageURLs.length, 1.5); // Add rectangles based on the number of imageURLs
+      this.rectangles = this.addRectanglesToCircle(this.imageURLs.length, 2.5); // Add rectangles based on the number of imageURLs
 
       /** Debug Variables */
       this.rectangles.forEach((rectangle) => {
@@ -220,7 +220,7 @@ export default class extends Controller {
 
     /** Positioning it fixed at the center of the scene */
     singlePhotoDisplay.position.set(0, 0, 0);
-    singlePhotoDisplay.rotation.set(0, 0, 0);
+    singlePhotoDisplay.rotation.set(0, 0.38, 0); // 0.38 = 22 degrees in radians - facing the camera at load
 
     return singlePhotoDisplay;
   }
