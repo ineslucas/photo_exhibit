@@ -2,7 +2,6 @@ import { Controller } from "@hotwired/stimulus";
 import * as THREE from "three";
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import GUI from 'lil-gui';
-import { main } from "@popperjs/core";
 
 // Connects to data-controller="threejs"
 export default class extends Controller {
@@ -85,32 +84,34 @@ export default class extends Controller {
     /** Debug */
     this.gui = new GUI();
 
-    /** Creating Main Scene, Camera, Renderer */
+    /** Creating Main Scene & Cursor / Mouse Move listerners */
     this.scene = new THREE.Scene();
     this.sizes = {
       width: window.innerWidth,
       height: window.innerHeight
     };
+    this.mouse = new THREE.Vector2();
+    window.addEventListener('mousemove', (event) => { // callback function - function that gets called (back) when the event happens
+      this.mouse.x = event.clientX / this.sizes.width * 2 - 1;
+      this.mouse.y = - (event.clientY / this.sizes.height) * 2 + 1;
+    });
 
-      /** Cursor */
-      this.mouse = new THREE.Vector2();
-      window.addEventListener('mousemove', (event) => { // callback function - function that gets called (back) when the event happens
-        this.mouse.x = event.clientX / this.sizes.width * 2 - 1;
-        this.mouse.y = - (event.clientY / this.sizes.height) * 2 + 1;
-      });
+    /** Which rectangle am I clicking on?: */
+    window.addEventListener('click', () => {
+      if (this.currentIntersect) {
+        // Iterate through each object in the rectangles array
+        this.rectangles.forEach((rectangle, index) => {
+          if(this.currentIntersect === rectangle) {
+            console.log(`clicked on rectangle ${index + 1}`);
+            // Update the single photo display with the texture of the clicked rectangle
+            this.singlePhotoDisplay.material.map = rectangle.material.map;
+            this.singlePhotoDisplay.material.needsUpdate = true;
+          }
+        });
+      }
+    });
 
-      /** Which rectangle am I clicking on?: */
-      window.addEventListener('click', () => {
-        if (this.currentIntersect) {
-          // Iterate through each object in the rectangles array
-          this.rectangles.forEach((rectangle, index) => {
-            if(this.currentIntersect === rectangle) {
-              console.log(`clicked on rectangle ${index + 1}`);
-            }
-          });
-        }
-      });
-
+    /** Camera & Renderer */
     this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
     this.renderer = new THREE.WebGLRenderer();
     this.renderer.setClearColor(0xFFFFFF); // 0xFFFFFF = white
