@@ -47,11 +47,9 @@ export default class extends Controller {
     });
   }
 
-  /** Loading texture from Cloudinary URLs*/
+  /** Loading texture from Cloudinary URLs into previously created rectangle */
   loadImageURLs() {
-    // Logging the canvas for debugging purposes.
     console.log("Logging the canvas", this.canvasTarget);
-
     // Accessing the DOM to retrieve the URLs stored in an input element.
     const imageUrlsInput = document.querySelector('input[name="image_urls"]'); // only reason we're able to select this is because it's in the DOM and this controller has access through the canvasTarget - verify!
     this.imageURLs = JSON.parse(imageUrlsInput.value); // creating an array of the URLs stored in the input element
@@ -61,16 +59,46 @@ export default class extends Controller {
     new THREE.TextureLoader().load(this.imageURLs[0], texture => {
       // Assigning the loaded texture to mainTextureOnDisplay once it's available.
       this.mainTextureOnDisplay = texture;
-      texture.colorSpace = THREE.SRGBColorSpace
+      texture.colorSpace = THREE.SRGBColorSpace;
       console.log("Main texture loaded:", this.mainTextureOnDisplay);
+
+      /** 🍓🍓🍓🍓🍓🍓🍓 Defining aspect ratio & measurements of the geometry as per loaded texture */
+      console.log("texture.image.width", texture.image.width);
+      console.log("texture.image.height", texture.image.height);
+      
+      const aspectRatio = texture.image.width / texture.image.height;
+      this.mainTextureAspectRatio = aspectRatio;
+      console.log(`Aspect ratio of main texture: ${aspectRatio} and width: ${texture.image.width} and height: ${texture.image.height}`); // logging correctly!
+
+      let width, height;
+
+      if (aspectRatio >= 1) {
+        // Landscape or square
+        width = Math.min(2, aspectRatio);
+        height = width / aspectRatio;
+      } else {
+        // Portrait
+        height = Math.min(2, 1 / aspectRatio);
+        width = height * aspectRatio;
+      }
+
+      this.singlePhotoDisplay.geometry.dispose(); // Dispose old geometry
+      this.singlePhotoDisplay.geometry = new THREE.PlaneGeometry(width, height);
+
+
+      /** 🍓🍓🍓🍓🍓🍓🍓*/
 
       // Updating the material of the single photo display with the loaded texture:
       // This update is inside the callback, ensuring the texture is loaded before assignment.
       this.singlePhotoDisplay.material.map = this.mainTextureOnDisplay; // Assign the loaded texture to the single photo display.
       this.singlePhotoDisplay.material.needsUpdate = true; // Telling Three.js that the material has been updated and that it needs to be re-rendered.
 
+      // Updating
+
+      this.singlePhotoDisplay.geometry.needsUpdate = true; // Telling Three.js that the geometry has been updated and that it needs to be re-rendered.
+
       /** Creating Rectangles */
-      this.rectangles = this.addRectanglesToCircle(this.imageURLs.length, 2.5); // Add rectangles based on the number of imageURLs
+      this.rectangles = this.addRectanglesToCircle(this.imageURLs.length, 2.5); // Add as many rectangles as imageURLs exist
 
       /** Debug Variables */
       this.rectangles.forEach((rectangle) => {
@@ -202,6 +230,20 @@ export default class extends Controller {
         texture.colorSpace = THREE.SRGBColorSpace
         rectangle.material.opacity = 1; // makes the texture visible
         rectangle.material.needsUpdate = true;
+
+        const aspectRatio = texture.image.width / texture.image.height;
+        console.log(`Aspect ratio of texture ${i + 1}: ${aspectRatio} and width: ${texture.image.width} and height: ${texture.image.height}`)
+        if (aspectRatio > 1) {
+          // it's a landscape photo
+          rectangle.scale.x = rectangleWidth; // Adjusting the rectangle's width to match the aspect ratio of the texture
+          rectangle.scale.y = aspectRatio; // Adjusting the rectangle's height to match the aspect ratio of the texture
+        } else {
+          // it's a portrait photo - not working yet
+          rectangle.scale.x = aspectRatio; // Adjusting the rectangle's width to match the aspect ratio of the texture
+          rectangle.scale.y = rectangleHeight; // Adjusting the rectangle's height to match the aspect ratio of the texture
+        }
+
+        rectangle.geometry.needsUpdate = true;
       });
     }
 
@@ -213,7 +255,7 @@ export default class extends Controller {
     // At this moment, this.mainTextureOnDisplay is still undefined because the texture hasn't finished loading yet. That's why the console log inside createSinglePhotoDisplay shows undefined.
 
     /** Geometry */
-    const singlePhotoDisplayGeometry = new THREE.PlaneGeometry(1*2, 0.5*2);
+    const singlePhotoDisplayGeometry = new THREE.PlaneGeometry(2, 1);
     /** Material */
     const singlePhotoDisplayMaterial = new THREE.MeshBasicMaterial({
       side: THREE.DoubleSide, // ensures that the material renders on both sides of our 2D plane
@@ -279,3 +321,12 @@ export default class extends Controller {
     /** TBC Animate singlePhotoDisplay to mirror camera */
   }
 }
+
+
+
+/** at the bottom of createSinglePhotoDisplay */
+ /** to Debug 🍓 - or mainTextureOnDisplay can just inherit the original aspect ratio */
+      // const aspectRatio = this.mainTextureOnDisplay.image.width / this.mainTextureOnDisplay.image.height;
+      // console.log(`Aspect ratio of texture ${i + 1}: ${aspectRatio} and width: ${this.mainTextureOnDisplay.image.width} and height: ${this.mainTextureOnDisplay.image.height}`)
+      // // singlePhotoDisplay.scale.x = 1*2; // Adjusting the rectangle's width to match the aspect ratio of the texture
+      // // singlePhotoDisplay.scale.y = aspectRatio; // Adjusting the rectangle's height to match the aspect ratio of the texture
