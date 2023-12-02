@@ -9,7 +9,8 @@
     <%# <% end %>
 
     <%# ⭐️ Adding a hidden field called :image_urls, which contains the serialized JSON representation of the @photos array with the image URLs generated using cl_image_path. %>
-    <%= hidden_field_tag :image_urls, @photos.map { |photo| cl_image_path(photo.image.key, height: 300, width: 400, crop: :fill) }.to_json %>
+    <%= hidden_field_tag :image_urls, @photos.map { |photo| cl_image_path(photo.image.key, crop: :pad) }.to_json %>
+    <%# Important: I can never specify a width here, or otherwise quality will suffer when viewing. %>
   </div>
 </main>
 
