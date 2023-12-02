@@ -61,6 +61,7 @@ export default class extends Controller {
     new THREE.TextureLoader().load(this.imageURLs[0], texture => {
       // Assigning the loaded texture to mainTextureOnDisplay once it's available.
       this.mainTextureOnDisplay = texture;
+      texture.colorSpace = THREE.SRGBColorSpace
       console.log("Main texture loaded:", this.mainTextureOnDisplay);
 
       // Updating the material of the single photo display with the loaded texture:
@@ -198,6 +199,7 @@ export default class extends Controller {
       // Loading the texture from the URL at index i and updating material.map with it
       new THREE.TextureLoader().load(this.imageURLs[i], texture => {
         rectangle.material.map = texture;
+        texture.colorSpace = THREE.SRGBColorSpace
         rectangle.material.opacity = 1; // makes the texture visible
         rectangle.material.needsUpdate = true;
       });
