@@ -2,7 +2,6 @@ import { Controller } from "@hotwired/stimulus";
 import * as THREE from "three";
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import GUI from 'lil-gui';
-import { main } from "@popperjs/core";
 
 // Connects to data-controller="threejs"
 export default class extends Controller {
@@ -12,6 +11,8 @@ export default class extends Controller {
     // console.log("Hello, Stimulus!", this.element); // console.log(THREE.OrbitControls); // console.log(GUI);
     this.handleResize();
     this.handleFullscreen();
+    this.rectangles = [];
+    this.thetaValues = [];
     this.initThreeJS();
     this.loadImageURLs();
   }
@@ -60,6 +61,7 @@ export default class extends Controller {
     new THREE.TextureLoader().load(this.imageURLs[0], texture => {
       // Assigning the loaded texture to mainTextureOnDisplay once it's available.
       this.mainTextureOnDisplay = texture;
+      texture.colorSpace = THREE.SRGBColorSpace
       console.log("Main texture loaded:", this.mainTextureOnDisplay);
 
       // Updating the material of the single photo display with the loaded texture:
@@ -68,7 +70,7 @@ export default class extends Controller {
       this.singlePhotoDisplay.material.needsUpdate = true; // Telling Three.js that the material has been updated and that it needs to be re-rendered.
 
       /** Creating Rectangles */
-      this.rectangles = this.addRectanglesToCircle(this.imageURLs.length, 1.5); // Add rectangles based on the number of imageURLs
+      this.rectangles = this.addRectanglesToCircle(this.imageURLs.length, 2.5); // Add rectangles based on the number of imageURLs
 
       /** Debug Variables */
       this.rectangles.forEach((rectangle) => {
@@ -77,7 +79,6 @@ export default class extends Controller {
 
       // Calling addToScene inside the callback to ensure the scene is updated after the texture is loaded.
       this.addToScene();
-      this.addToPictureScene();
     });
   }
 
@@ -85,40 +86,59 @@ export default class extends Controller {
     /** Debug */
     this.gui = new GUI();
 
-    /** Main Scene, Camera, Renderer */
+    /** Creating Main Scene & Cursor / Mouse Move listerners */
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-    this.renderer = new THREE.WebGLRenderer();
-    this.renderer.setClearColor(0xFFFFFF); // 0xFFFFFF = white
     this.sizes = {
       width: window.innerWidth,
       height: window.innerHeight
-    }
+    };
+    this.mouse = new THREE.Vector2();
+    window.addEventListener('mousemove', (event) => { // callback function - function that gets called (back) when the event happens
+      this.mouse.x = event.clientX / this.sizes.width * 2 - 1;
+      this.mouse.y = - (event.clientY / this.sizes.height) * 2 + 1;
+    });
+
+    /** Which rectangle am I clicking on? Update singlePhotoDisplay accordingly */
+    window.addEventListener('click', () => {
+      if (this.currentIntersect) {
+        // Iterate through each object in the rectangles array
+        this.rectangles.forEach((rectangle, index) => {
+          if(this.currentIntersect === rectangle) {
+            console.log(`clicked on rectangle ${index + 1}`);
+            // Update the single photo display with the texture of the clicked rectangle
+            this.singlePhotoDisplay.material.map = rectangle.material.map;
+            this.singlePhotoDisplay.material.needsUpdate = true;
+          }
+        });
+      }
+    });
+
+    /** Camera & Renderer */
+    this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+    this.renderer = new THREE.WebGLRenderer();
+    this.renderer.setClearColor(0xFFFFFF); // 0xFFFFFF = white
     this.renderer.setSize( this.sizes.width, this.sizes.height );
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // retina display - optimizing for performance, by creating a pixel ratio between own screens' and a maximum of 2
     document.body.appendChild(this.renderer.domElement);
 
-    /** Scene with SinglePhotoDisplay */
-    this.pictureScene = new THREE.Scene();
-    this.pictureCamera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-    this.pictureCamera.position.z = 5; // similar as (main) camera
+    /**
+     * Objects */
 
-    /** Circle */
-    const circleGeometry = new THREE.CircleGeometry( 2, 32 );
-    this.wireframeMaterial = new THREE.MeshBasicMaterial( {
-      color: 0x00ff00,
-      wireframe: true
-    } );
-    this.circle = new THREE.Mesh( circleGeometry, this.wireframeMaterial );
+      /** Circle */
+      const circleGeometry = new THREE.CircleGeometry( 2, 32 );
+      this.wireframeMaterial = new THREE.MeshBasicMaterial( {
+        color: 0x00ff00,
+        wireframe: true
+      } );
+      this.circle = new THREE.Mesh( circleGeometry, this.wireframeMaterial );
+      this.circle.rotation.x = Math.PI / - 3; /** Rotate the circle around the X-axis by ~30 degrees */
+      // this.circle.rotation.y = Math.PI / 4; /** To rotate around the Y-axis, uncomment: */
 
-    /** Rotate the circle around the X-axis by ~30 degrees */
-    this.circle.rotation.x = Math.PI / - 3;
+      /** Single Photo Display */
+      this.singlePhotoDisplay = this.createSinglePhotoDisplay();
 
-    /** To rotate around the Y-axis, uncomment: */
-    // this.circle.rotation.y = Math.PI / 4;
-
-    /** Single Photo Display */
-    this.singlePhotoDisplay = this.createSinglePhotoDisplay();
+    /** Raycaster */
+    this.raycaster = new THREE.Raycaster();
 
     /** Grid & Axis Helper */
     this.gridHelper = new THREE.GridHelper( 10, 10 );
@@ -142,13 +162,10 @@ export default class extends Controller {
     this.scene.add(
       this.gridHelper,
       this.circle,
-      this.axesHelper);
+      this.axesHelper,
+      this.singlePhotoDisplay);
 
-    this.renderer.render( this.scene, this.camera ); // TBC see if this is needed or if addToPictureScene is also needs it
-  }
-
-  addToPictureScene() {
-    this.pictureScene.add(this.singlePhotoDisplay); // Ensure this is only added after the texture is loaded
+    this.renderer.render( this.scene, this.camera );
   }
 
   addRectanglesToCircle(numberOfRectangles, circleRadius) {
@@ -158,6 +175,7 @@ export default class extends Controller {
 
     for (let i = 0; i < numberOfRectangles; i++) { // = we loop as many times as the number of rectangles we want to create
       const theta = (i / numberOfRectangles) * 2 * Math.PI; // angle between each rectangle
+      this.thetaValues.push(theta); // to be used in the position and rotation of each photo on click
 
       const rectangleMaterial = new THREE.MeshBasicMaterial({
         side: THREE.DoubleSide,
@@ -181,6 +199,7 @@ export default class extends Controller {
       // Loading the texture from the URL at index i and updating material.map with it
       new THREE.TextureLoader().load(this.imageURLs[i], texture => {
         rectangle.material.map = texture;
+        texture.colorSpace = THREE.SRGBColorSpace
         rectangle.material.opacity = 1; // makes the texture visible
         rectangle.material.needsUpdate = true;
       });
@@ -205,7 +224,7 @@ export default class extends Controller {
 
     /** Positioning it fixed at the center of the scene */
     singlePhotoDisplay.position.set(0, 0, 0);
-    singlePhotoDisplay.rotation.set(0, 0, 0);
+    singlePhotoDisplay.rotation.set(0, 0.38, 0); // 0.38 = 22 degrees in radians - facing the camera at load
 
     return singlePhotoDisplay;
   }
@@ -214,10 +233,49 @@ export default class extends Controller {
     // Creating a loop that causes the renderer to draw the scene every time the screen is refreshed (typically 60 times per second)
     requestAnimationFrame(this.animate.bind(this));
 
-    // Render the main scene with orbit controls
+    /** Render the main scene with orbit controls */
     this.renderer.render(this.scene, this.camera);
 
-    // Render the picture scene without orbit controls
-    // this.renderer.render(this.pictureScene, this.pictureCamera);
+    /** Raycaster Animation */
+    this.raycaster.setFromCamera(this.mouse, this.camera) // Raycaster is an object that allows us to detect intersections between rays and objects
+    this.intersects = this.raycaster.intersectObjects(this.rectangles);
+
+    /** Response to Hovering */
+    if (this.intersects.length > 0) {
+      const hoveredRectangle = this.intersects[0].object;
+      const index = this.rectangles.indexOf(hoveredRectangle); // "At what position (index) in the this.rectangles array is the hoveredRectangle located?"
+      const theta = this.thetaValues[index]; // Get stored theta value for the hovered rectangle
+      hoveredRectangle.position.x = (2.5 + 0.5) * Math.sin(theta);
+      hoveredRectangle.position.y = (2.5 + 0.5) * Math.cos(theta);
+      // hoveredRectangle.material.color.set(0xff0000); // Red
+
+    } else {
+      // When not hovering
+      this.rectangles.forEach((rectangle, index) => {
+        const theta = this.thetaValues[index];
+        rectangle.position.x = 2.5 * Math.sin(theta); // 2.5 is a harded coded value - the original circleRadius
+        rectangle.position.y = 2.5 * Math.cos(theta);
+        // rectangle.material.color.set(0xffffff); // Blue
+      });
+    }
+
+    // How to check if we're hovering over a rectangle:
+    if (this.intersects.length) {
+
+      if (this.currentIntersect === null) { // if right before we weren't hovering over a rectangle,
+        console.log("mouse enter");
+      }
+      this.currentIntersect = this.intersects[0].object;
+
+    } else {
+
+      if (this.currentIntersect) { // if right before there was something inside the currentIntersect variable & now there isn't, it means we just left a rectangle
+        console.log("mouse leave");
+      }
+      this.currentIntersect = null;
+
+    }
+
+    /** TBC Animate singlePhotoDisplay to mirror camera */
   }
 }
