@@ -5,7 +5,7 @@ import GUI from 'lil-gui';
 
 // Connects to data-controller="threejs"
 export default class extends Controller {
-  static targets = ['canvas'];
+  static targets = [ "canvas", "photoInfo" ];
 
   connect() {
     // console.log("Hello, Stimulus!", this.element); // console.log(THREE.OrbitControls); // console.log(GUI);
@@ -88,6 +88,13 @@ export default class extends Controller {
             }
             this.singlePhotoDisplay.geometry.dispose();
             this.singlePhotoDisplay.geometry = new THREE.PlaneGeometry(width, height);
+
+            /** Update the contents of photoInfoTarget - update the title, journal entry and photo to correspond to clicked on rectangle */
+            const photo = this.photoData[index];
+            this.photoInfoTarget.innerHTML = `
+              <p>${photo.title}</p>
+              <p>${photo.journal_entry}</p>
+              <img src="${photo.image_url}" width="300" />`;
           }
         });
       }
@@ -239,6 +246,10 @@ export default class extends Controller {
     // Accessing the DOM to retrieve the URLs stored in an input element.
     const imageUrlsInput = document.querySelector('input[name="image_urls"]'); // only reason we're able to select this is because it's in the DOM and this controller has access through the canvasTarget - verify!
     this.imageURLs = JSON.parse(imageUrlsInput.value); // creating an array of the URLs stored in the input element
+
+    // Load photo information from the DOM
+    const photoDataInput = document.querySelector('input[name="photo_data"]');
+    this.photoData = JSON.parse(photoDataInput.value);
 
     // Loading only the first texture from the URL at index 0 and setting it as the main texture for display.
     // The key is the use of a callback function to handle the asynchronous nature of texture loading.
