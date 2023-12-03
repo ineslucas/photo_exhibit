@@ -90,7 +90,7 @@ export default class extends Controller {
             this.singlePhotoDisplay.geometry = new THREE.PlaneGeometry(width, height);
 
             /** Update the contents of photoInfoTarget - update the title, journal entry and photo to correspond to clicked on rectangle */
-            const photo = this.photoData[index];
+            const photo = this.allPhotosData[index];
             this.photoInfoTarget.innerHTML = `
               <p>${photo.title}</p>
               <p>${photo.journal_entry}</p>
@@ -184,7 +184,8 @@ export default class extends Controller {
       rectangles.push(rectangle); // Adding the rectangle to the rectangles array, so that rectangles array can be accessed outside
 
       // Loading the texture from the URL at index i and updating material.map with it
-      new THREE.TextureLoader().load(this.imageURLs[i], texture => {
+      const photoURL = this.allPhotosData[i];
+      new THREE.TextureLoader().load(photoURL.image_url, texture => {
         rectangle.material.map = texture;
         texture.colorSpace = THREE.SRGBColorSpace
         rectangle.material.opacity = 1; // texture now visible
@@ -243,52 +244,59 @@ export default class extends Controller {
   /** Loading texture from Cloudinary URLs into previously created rectangle */
   loadImageURLs() {
     console.log("Logging the canvas", this.canvasTarget);
+
     // Accessing the DOM to retrieve the URLs stored in an input element.
-    const imageUrlsInput = document.querySelector('input[name="image_urls"]'); // only reason we're able to select this is because it's in the DOM and this controller has access through the canvasTarget - verify!
-    this.imageURLs = JSON.parse(imageUrlsInput.value); // creating an array of the URLs stored in the input element
+    const photoDataInput = document.querySelector('input[name="photo_data"]'); // only reason we're able to select this is because it's in the DOM and this controller has access through the canvasTarget - verify!
+    this.allPhotosData = JSON.parse(photoDataInput.value); // creating an array of the URLs/info stored in the input element
 
-    // Load photo information from the DOM
-    const photoDataInput = document.querySelector('input[name="photo_data"]');
-    this.photoData = JSON.parse(photoDataInput.value);
+    this.allPhotosData.forEach((photo, index) => {
+      // The key is the use of a callback function to handle the asynchronous nature of texture loading.
+      new THREE.TextureLoader().load(photo.image_url, texture => {
 
-    // Loading only the first texture from the URL at index 0 and setting it as the main texture for display.
-    // The key is the use of a callback function to handle the asynchronous nature of texture loading.
-    new THREE.TextureLoader().load(this.imageURLs[0], texture => {
-      this.mainTextureOnDisplay = texture; // Assigning the loaded texture to mainTextureOnDisplay once it's available.
-      texture.colorSpace = THREE.SRGBColorSpace;
-      console.log("Main texture loaded:", this.mainTextureOnDisplay);
+        // Loading only the first texture from the URL at index 0 and setting it as the main texture for display.
+        // Check if it's the first photo to set as the main texture
+        if (index === 0) {
+          this.mainTextureOnDisplay = texture; // Assigning the loaded texture to mainTextureOnDisplay once it's available.
+          texture.colorSpace = THREE.SRGBColorSpace;
+          console.log("Main texture loaded:", this.mainTextureOnDisplay);
 
-      /** New measurements of the geometry of the main image as per loaded texture */
-      const aspectRatio = texture.image.width / texture.image.height;
-      this.mainTextureAspectRatio = aspectRatio;
-      console.log(`Aspect ratio of main texture: ${aspectRatio} and width: ${texture.image.width} and height: ${texture.image.height}`); // logging correctly!
-      let width, height;
-      if (aspectRatio >= 1) {
-        // Landscape or square
-        width = Math.min(2, aspectRatio);
-        height = width / aspectRatio;
-      } else {
-        // Portrait
-        height = Math.min(2, 1 / aspectRatio);
-        width = height * aspectRatio;
-      }
-      this.singlePhotoDisplay.geometry.dispose(); // Dispose old geometry
-      this.singlePhotoDisplay.geometry = new THREE.PlaneGeometry(width, height);
+          /** New measurements of the geometry of the main image as per loaded texture */
+          const aspectRatio = texture.image.width / texture.image.height;
+          this.mainTextureAspectRatio = aspectRatio;
+          console.log(`Aspect ratio of main texture: ${aspectRatio} and width: ${texture.image.width} and height: ${texture.image.height}`); // logging correctly!
 
-      // Updating the material of the single photo display with the loaded texture:
-        // This update is inside the callback, ensuring the texture is loaded before assignment.
-      this.singlePhotoDisplay.material.map = this.mainTextureOnDisplay; // Assign the loaded texture to the single photo display.
-      this.singlePhotoDisplay.material.needsUpdate = true; // Telling Three.js that the material has been updated and that it needs to be re-rendered.
+          let width, height;
+          if (aspectRatio >= 1) {
+            // Landscape or square
+            width = Math.min(2, aspectRatio);
+            height = width / aspectRatio;
+          } else {
+            // Portrait
+            height = Math.min(2, 1 / aspectRatio);
+            width = height * aspectRatio;
+          }
 
-      /** Creating Rectangles & Debug Variables */
-      this.rectangles = this.addRectanglesToCircle(this.imageURLs.length, 2.5); // Add as many rectangles as imageURLs exist
-      this.rectangles.forEach((rectangle) => {
-        this.gui.add(rectangle.rotation, 'y').min(- 3).max(3).step(0.01).name('rotationY');
+          this.singlePhotoDisplay.geometry.dispose(); // Dispose old geometry
+          this.singlePhotoDisplay.geometry = new THREE.PlaneGeometry(width, height);
+
+          // Updating the material of the single photo display with the loaded texture:
+            // This update is inside the callback, ensuring the texture is loaded before assignment.
+          this.singlePhotoDisplay.material.map = this.mainTextureOnDisplay; // Assign the loaded texture to the single photo display.
+          this.singlePhotoDisplay.material.needsUpdate = true; // Telling Three.js that the material has been updated and that it needs to be re-rendered.
+        }
       });
 
-      // Calling addToScene inside the callback to ensure the scene is updated after the texture is loaded.
-      this.addToScene();
     });
+
+    /** Creating Rectangles & Debug Variables */
+    this.rectangles = this.addRectanglesToCircle(this.allPhotosData.length, 2.5); // Add as many rectangles as imageURLs exist
+    this.rectangles.forEach((rectangle) => {
+      this.gui.add(rectangle.rotation, 'y').min(- 3).max(3).step(0.01).name('rotationY');
+    });
+
+    // Calling addToScene inside the callback to ensure the scene is updated after the texture is loaded.
+    this.addToScene();
+
   }
 
   animate() {
