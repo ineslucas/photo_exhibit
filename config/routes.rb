@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   get 'photos/:id', to: 'photos#show', as: 'photo'
 
   # Edit action
-  get 'photos/:id/edit', to: 'photos#edit'
+  get 'photos/:id/edit', to: 'photos#edit', as: 'edit_photo'
 
   # Update action
   patch 'photos/:id', to: 'photos#update'
@@ -25,7 +25,7 @@ Rails.application.routes.draw do
   # put 'photos/:id', to: 'photos#update'
 
   # Destroy action
-  # delete 'photos/:id', to: 'photos#destroy'
+  delete 'photos/:id', to: 'photos#destroy'
 
   get 'photos/find/:id', to: 'photos#find_photo', as: 'find_photo'
 end
