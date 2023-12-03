@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 import * as THREE from "three";
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import GUI from 'lil-gui';
+// import GUI from 'lil-gui';
 
 // Connects to data-controller="threejs"
 export default class extends Controller {
@@ -49,7 +49,7 @@ export default class extends Controller {
 
   initThreeJS() {
     /** Debug */
-    this.gui = new GUI();
+    // this.gui = new GUI();
 
     /** Creating Main Scene & Cursor / Mouse Move listerners */
     this.scene = new THREE.Scene();
@@ -92,9 +92,8 @@ export default class extends Controller {
             /** Update the contents of photoInfoTarget - update the title, journal entry and photo to correspond to clicked on rectangle */
             const photo = this.allPhotosData[index];
             this.photoInfoTarget.innerHTML = `
-              <p>${photo.title}</p>
-              <p>${photo.journal_entry}</p>
-              <img src="${photo.image_url}" width="300" />`;
+              <b>${photo.title}</b>
+              <p>${photo.journal_entry}</p>`; // <img src="${photo.image_url}" width="300" />
           }
         });
       }
@@ -115,7 +114,9 @@ export default class extends Controller {
       const circleGeometry = new THREE.CircleGeometry( 2, 32 );
       this.wireframeMaterial = new THREE.MeshBasicMaterial( {
         color: 0x00ff00,
-        wireframe: true
+        wireframe: true,
+        transparent: true,
+        opacity: 0,
       } );
       this.circle = new THREE.Mesh( circleGeometry, this.wireframeMaterial );
       this.circle.rotation.x = Math.PI / - 3; /** Rotate the circle around the X-axis by ~30 degrees */
@@ -147,9 +148,9 @@ export default class extends Controller {
 
   addToScene() {
     this.scene.add(
-      this.gridHelper,
+      // this.gridHelper,
       this.circle,
-      this.axesHelper,
+      // this.axesHelper,
       this.singlePhotoDisplay);
 
     this.renderer.render( this.scene, this.camera );
@@ -290,9 +291,9 @@ export default class extends Controller {
 
     /** Creating Rectangles & Debug Variables */
     this.rectangles = this.addRectanglesToCircle(this.allPhotosData.length, 2.5); // Add as many rectangles as imageURLs exist
-    this.rectangles.forEach((rectangle) => {
-      this.gui.add(rectangle.rotation, 'y').min(- 3).max(3).step(0.01).name('rotationY');
-    });
+    // this.rectangles.forEach((rectangle) => {
+    //   this.gui.add(rectangle.rotation, 'y').min(- 3).max(3).step(0.01).name('rotationY');
+    // });
 
     // Calling addToScene inside the callback to ensure the scene is updated after the texture is loaded.
     this.addToScene();

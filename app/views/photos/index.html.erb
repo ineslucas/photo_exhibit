@@ -1,12 +1,14 @@
 <%# View for all instances of Photo.%>
 
-<div data-controller="threejs">
+<div data-controller="threejs" style="padding-left: 27px; padding-right: 27px;">
   <main>
     <% last_updated_photo = @photos.order(updated_at: :desc).last %>
     <div data-threejs-target="photoInfo"> <%# All HTML in this div will be replaced %>
-      <%= last_updated_photo.title %>
+      <b><%= last_updated_photo.title %></b>
       <br>
-      <%= cl_image_tag last_updated_photo.image.key, width: 300, crop: :fill %>
+      <%= last_updated_photo.journal_entry %>
+      <br>
+      <%# <%= cl_image_tag last_updated_photo.image.key, width: 300, crop: :fill %>
     </div>
 
     <%# The hidden field contains the serialized JSON object/representation of the @photos array with the image URLs generated using cl_image_path. %>
