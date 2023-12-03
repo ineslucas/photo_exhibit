@@ -2,30 +2,24 @@
 
 <div data-controller="threejs">
   <main>
-    <%# <% @photos.each do |photo| %>
-      <%# <%= cl_image_tag photo.image.key, width: 300, crop: :fill %>
-    <%# <% end %>
-
     <% last_updated_photo = @photos.order(updated_at: :desc).last %>
     <div data-threejs-target="photoInfo"> <%# All HTML in this div will be replaced %>
+      <%= last_updated_photo.title %>
+      <br>
       <%= cl_image_tag last_updated_photo.image.key, width: 300, crop: :fill %>
     </div>
 
-    <%= hidden_field_tag :image_urls, @photos.map { |photo| cl_image_path(photo.image.key, crop: :pad) }.to_json %>
-      <%# The hidden field :image_urls, which contains the serialized JSON representation of the @photos array with the image URLs generated using cl_image_path. %>
-      <%# Important: I can never specify a width here, or otherwise quality will suffer when viewing. %>
-
+    <%# The hidden field contains the serialized JSON object/representation of the @photos array with the image URLs generated using cl_image_path. %>
+    <%# Important: I can never specify a width here, or otherwise quality will suffer when viewing. %>
     <%= hidden_field_tag :photo_data, @photos.map { |photo|
         {
           title: photo.title,
           journal_entry: photo.journal_entry,
           date_taken: photo.date_taken,
-          image_url: cl_image_path(photo.image.key)
+          image_url: cl_image_path(photo.image.key, crop: :pad)
         }
       }.to_json
     %>
-
   </main>
-
   <%= content_tag(:canvas, "", data: { threejs_target: "canvas" }) %>
 </div>
