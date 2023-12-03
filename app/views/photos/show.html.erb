@@ -2,6 +2,9 @@
 
 <h1><%= @photo.title %></h1>
 <p><%= @photo.journal_entry %></p>
-<p><%= image_tag(@photo.image, style: "height: 300px") %></p> <%# temp note: with extra steps + defining a thumbnail method, these can resize properly according to aspect ratio%>
-<%= cl_image_tag @photo.image.key, height: 300, crop: :fill %>
+<p><%= image_tag(@photo.image, style: "height: 300px") %></p> <%# with extra steps + defining a thumbnail method, these can resize properly according to aspect ratio%>
 <%= cl_image_tag @photo.image.key, height: 300, crop: :pad %>
+<%= link_to "Edit", edit_photo_path(@photo) %>
+<%= link_to photo_path(@photo), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} do %>
+  <i class="fas fa-trash"></i>
+<% end %>
