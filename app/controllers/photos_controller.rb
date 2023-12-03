@@ -17,7 +17,9 @@ class PhotosController < ApplicationController
     if @photo.save
       redirect_to photos_path, notice: "Photo was successfully added."
     else
-      render :new
+      # render :new
+      redirect_to new_photo_path, alert: 'Try to add a photo this time.'
+      # downside of redirect_to is that it doesn't keep the journal entry text
     end
   end
 
