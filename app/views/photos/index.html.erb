@@ -4,6 +4,8 @@
   <main>
     <% last_updated_photo = @photos.order(updated_at: :desc).last %>
     <div data-threejs-target="photoInfo"> <%# All HTML in this div will be replaced %>
+      <%= last_updated_photo.title %>
+      <br>
       <%= cl_image_tag last_updated_photo.image.key, width: 300, crop: :fill %>
     </div>
 
