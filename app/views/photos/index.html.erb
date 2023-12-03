@@ -2,11 +2,11 @@
 
 <main>
   <div>
-    <%# <% @photos.each do |photo| %>
-      <%# <p><%= photo.title %>
+    <% @photos.each do |photo| %>
+      <p><%= photo.title %></p>
       <%# <p><%= photo.journal_entry %>
-      <%# <%= cl_image_tag photo.image.key, height: 300, width: 400, crop: :fill %>
-    <%# <% end %>
+      <%= cl_image_tag photo.image.key, height: 300, width: 400, crop: :fill %>
+    <% end %>
 
     <%# ⭐️ Adding a hidden field called :image_urls, which contains the serialized JSON representation of the @photos array with the image URLs generated using cl_image_path. %>
     <%= hidden_field_tag :image_urls, @photos.map { |photo| cl_image_path(photo.image.key, crop: :pad) }.to_json %>
