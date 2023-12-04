@@ -8,9 +8,8 @@ Start your server with ./bin/dev.
 
 **Learning outcomes from this project:**
 - Full Stack Development in Rails
-- Three JS
-- Stimulus JS
-- JavaScript in Rails
+- Three JS with Stimulus JS
+- JavaScript in Rails - passing values and data from database to view to Stimulus and back
 - Trigonometry
 - Image processing in development
 - Deploying with Heroku
