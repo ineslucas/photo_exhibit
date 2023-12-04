@@ -20,4 +20,4 @@ Start your server with ./bin/dev.
 - Deploying with Heroku
 
 **Thank you to...**
-- [@disinnnn]([url](https://twitter.com/disinnnn)https://twitter.com/disinnnn) for making great SVGs
+- [@disinnnn]([url](https://twitter.com/disinnnn)https://twitter.com/disinnnn) on Twitter for making great SVGs
