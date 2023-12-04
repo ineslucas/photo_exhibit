@@ -1,5 +1,10 @@
 This project is a dynamic 3D visualization where users can upload their photography work. The main focus is on the interactive and dynamic nature of the 3D scene, with user-uploaded images being a key feature.
 
+I've always wanted a place on the inter-webs to showcase my photography. This is that.
+
+**Demo**
+https://photo-exhibit-bc1af42f9a26.herokuapp.com
+
 **Stack**
 Using esbuild, jsbundling-rails, Active Storage, Yarn to add package managers and WebGL/Three.JS.
 
