@@ -1,7 +1,7 @@
 <%# View for all instances of Photo.%>
 
-<div data-controller="threejs" style="padding-left: 27px; padding-right: 27px;">
-  <main>
+<div data-controller="threejs">
+  <main style="padding-left: 27px; padding-right: 27px;">
     <% last_updated_photo = @photos.order(updated_at: :desc).last %>
     <div data-threejs-target="photoInfo"> <%# All HTML in this div will be replaced %>
       <b><%= last_updated_photo.title %></b>
