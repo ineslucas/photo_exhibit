@@ -27,6 +27,6 @@ module PhotoExhibit
     # Added in trying to compile assets & getting the image error solved
     config.assets.enabled = true
     config.assets.compile = true
-    config.assets.paths << Rails.root.join('app', 'assets')
+    config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
   end
 end
