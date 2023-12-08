@@ -17,8 +17,8 @@
 }
 
 .navbar-lewagon .navbar-brand svg {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   color: $orange;
 }
 
@@ -32,10 +32,13 @@
 // add media for the sizes for mobile and web page not working
 @media (max-width: 768px) {
   .navbar-lewagon .navbar-brand svg {
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
+    color: $orange;
   }
   .navbar-font {
-    font-size: 30px;
+    font-family: "Pilowlava", sans-serif;
+    color: $orange;
+    font-size: 40px;
   }
 }
