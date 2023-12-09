@@ -92,8 +92,8 @@ export default class extends Controller {
             /** Update the contents of photoInfoTarget - update the title, journal entry and photo to correspond to clicked on rectangle */
             const photo = this.allPhotosData[index];
             this.photoInfoTarget.innerHTML = `
-              <b>${photo.title}</b>
-              <p>${photo.journal_entry}</p>`; // <img src="${photo.image_url}" width="300" />
+              <p>${photo.journal_entry}</p>
+              <b>${photo.title}</b>`; // <img src="${photo.image_url}" width="300" />
           }
         });
       }
