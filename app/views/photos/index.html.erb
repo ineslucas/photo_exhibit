@@ -1,15 +1,16 @@
 <%# View for all instances of Photo.%>
 
-<div data-controller="threejs">
+<div data-controller="threejs" >
   <main style="padding-left: 27px; padding-right: 27px;">
-    <% last_updated_photo = @photos.order(updated_at: :desc).last %>
-    <div data-threejs-target="photoInfo"> <%# All HTML in this div will be replaced %>
-      <b><%= last_updated_photo.title %></b>
-      <br>
-      <%= last_updated_photo.journal_entry %>
-      <br>
-      <%# <%= cl_image_tag last_updated_photo.image.key, width: 300, crop: :fill %>
+    <div>
+      <% last_updated_photo = @photos.order(updated_at: :desc).last %>
+      <div data-threejs-target="photoInfo" style="position: fixed; bottom: 20px; left: 27px; width: 90%; display: flex; flex-direction: column-reverse; height: 100vh; overflow: auto;"> <%# All HTML in this div will be replaced %>
+        <%= last_updated_photo.journal_entry %>
+        <b><%= last_updated_photo.title %></b>
+        <%# <%= cl_image_tag last_updated_photo.image.key, width: 300, crop: :fill %>
+      </div>
     </div>
+
 
     <%# The hidden field contains the serialized JSON object/representation of the @photos array with the image URLs generated using cl_image_path. %>
     <%# Important: I can never specify a width here, or otherwise quality will suffer when viewing. %>
@@ -25,3 +26,11 @@
   </main>
   <%= content_tag(:canvas, "", data: { threejs_target: "canvas" }) %>
 </div>
+
+<%# export const BottomLeft = styled.div`
+  position: absolute;
+  bottom: 5vw;
+  left: 5vw;
+  width: 30ch;
+  max-width: 40%;
+` %>
