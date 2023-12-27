@@ -3,7 +3,7 @@ This project is a dynamic 3D visualization where users can upload their photogra
 I've always wanted a place on the inter-webs to showcase my photography. This is that.
 
 **Demo**
-https://photo-exhibit-bc1af42f9a26.herokuapp.com
+http://www.memorylab.space
 
 **Stack**
 Using esbuild, jsbundling-rails, Active Storage, Yarn to add package managers and WebGL/Three.JS.
