@@ -18,6 +18,7 @@ Start your server with ./bin/dev.
 - Trigonometry
 - Image processing in development
 - Deploying with Heroku
+- Loading techniques for good performance
 
 **Thank you to...**
 - [@disinnnn]([url](https://twitter.com/disinnnn)https://twitter.com/disinnnn) on Twitter for making great SVGs
