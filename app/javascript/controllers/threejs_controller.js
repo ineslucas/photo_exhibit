@@ -112,13 +112,8 @@ export default class extends Controller {
 
       /** Circle */
       const circleGeometry = new THREE.CircleGeometry( 2, 32 );
-      this.wireframeMaterial = new THREE.MeshBasicMaterial( {
-        color: 0x00ff00,
-        wireframe: true,
-        transparent: true,
-        opacity: 0,
-      } );
-      this.circle = new THREE.Mesh( circleGeometry, this.wireframeMaterial );
+      this.wireframeMaterial = new THREE.MeshBasicMaterial({ visible: false });
+      this.circle = new THREE.Mesh(circleGeometry, this.wireframeMaterial);
       this.circle.rotation.x = Math.PI / - 3; /** Rotate the circle around the X-axis by ~30 degrees */
       // this.circle.rotation.y = Math.PI / 4; /** To rotate around the Y-axis, uncomment: */
 
@@ -244,7 +239,7 @@ export default class extends Controller {
 
   /** Loading texture from Cloudinary URLs into previously created rectangle */
   loadImageURLs() {
-    console.log("Logging the canvas HIO", this.canvasTarget);
+    console.log("Logging the canvas HIO6", this.canvasTarget);
 
     // Accessing the DOM to retrieve the URLs stored in an input element.
     const photoDataInput = document.querySelector('input[name="photo_data"]'); // only reason we're able to select this is because it's in the DOM and this controller has access through the canvasTarget - verify!
@@ -335,21 +330,15 @@ export default class extends Controller {
 
     // How to check if we're hovering over a rectangle:
     if (this.intersects.length) {
-
       // if (this.currentIntersect === null) { // if right before we weren't hovering over a rectangle,
       //   // console.log("mouse enter");
       // }
       this.currentIntersect = this.intersects[0].object;
-
     } else {
-
       // if (this.currentIntersect) { // if right before there was something inside the currentIntersect variable & now there isn't, it means we just left a rectangle
       //   console.log("mouse leave");
       // }
       this.currentIntersect = null;
-
     }
-
-    /** TBC Animate singlePhotoDisplay to mirror camera */
   }
 }
