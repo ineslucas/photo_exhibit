@@ -244,7 +244,7 @@ export default class extends Controller {
 
   /** Loading texture from Cloudinary URLs into previously created rectangle */
   loadImageURLs() {
-    console.log("Logging the canvas", this.canvasTarget);
+    console.log("Logging the canvas HIO", this.canvasTarget);
 
     // Accessing the DOM to retrieve the URLs stored in an input element.
     const photoDataInput = document.querySelector('input[name="photo_data"]'); // only reason we're able to select this is because it's in the DOM and this controller has access through the canvasTarget - verify!
@@ -310,6 +310,9 @@ export default class extends Controller {
     /** Raycaster Animation */
     this.raycaster.setFromCamera(this.mouse, this.camera) // Raycaster is an object that allows us to detect intersections between rays and objects
     this.intersects = this.raycaster.intersectObjects(this.rectangles);
+
+    /** Billboarding */
+    this.singlePhotoDisplay.lookAt(this.camera.position); // Make the singlePhotoDisplay always face the camera
 
     /** Response to Hovering */
     if (this.intersects.length > 0) {
