@@ -59,6 +59,7 @@ export default class extends Controller {
     };
     this.mouse = new THREE.Vector2();
     window.addEventListener('mousemove', (event) => { // callback function - function that gets called (back) when the event happens
+      event.preventDefault(); // Prevents the default behaviour of the mousemove event, which is to move the cursor
       this.mouse.x = event.clientX / this.sizes.width * 2 - 1;
       this.mouse.y = - (event.clientY / this.sizes.height) * 2 + 1;
     });
@@ -122,6 +123,7 @@ export default class extends Controller {
 
     /** Raycaster */
     this.raycaster = new THREE.Raycaster();
+    // this.raycaster.params.Mesh.threshold = 5; // How close to the object the mouse needs to be in order to trigger the hover effect
 
     /** Grid & Axis Helper */
     this.gridHelper = new THREE.GridHelper( 10, 10 );
@@ -239,7 +241,7 @@ export default class extends Controller {
 
   /** Loading texture from Cloudinary URLs into previously created rectangle */
   loadImageURLs() {
-    console.log("Logging the canvas HIO6", this.canvasTarget);
+    console.log("Logging the canvas O9", this.canvasTarget);
 
     // Accessing the DOM to retrieve the URLs stored in an input element.
     const photoDataInput = document.querySelector('input[name="photo_data"]'); // only reason we're able to select this is because it's in the DOM and this controller has access through the canvasTarget - verify!
@@ -312,18 +314,26 @@ export default class extends Controller {
     /** Response to Hovering */
     if (this.intersects.length > 0) {
       const hoveredRectangle = this.intersects[0].object;
-      const index = this.rectangles.indexOf(hoveredRectangle); // "At what position (index) in the this.rectangles array is the hoveredRectangle located?"
-      const theta = this.thetaValues[index]; // Get stored theta value for the hovered rectangle
-      hoveredRectangle.position.x = (2.5 + 0.5) * Math.sin(theta);
-      hoveredRectangle.position.y = (2.5 + 0.5) * Math.cos(theta);
-      // hoveredRectangle.material.color.set(0xff0000); // Red
+      const additionalRotation = 15 * (Math.PI / 180); // 15 degrees in radians
+      hoveredRectangle.rotation.x = Math.PI / 2 + additionalRotation;
 
+      // Moving the hovered rectangle to the side
+        // const index = this.rectangles.indexOf(hoveredRectangle); // "At what position (index) in the this.rectangles array is the hoveredRectangle located?"
+        // const theta = this.thetaValues[index]; // Get stored theta value for the hovered rectangle
+        // hoveredRectangle.position.x = (2.5 + 0.5) * Math.sin(theta);
+        // hoveredRectangle.position.y = (2.5 + 0.5) * Math.cos(theta);
+      // hoveredRectangle.material.color.set(0xff0000); // Red
     } else {
       // When not hovering
       this.rectangles.forEach((rectangle, index) => {
         const theta = this.thetaValues[index];
         rectangle.position.x = 2.5 * Math.sin(theta); // 2.5 is a harded coded value - the original circleRadius
         rectangle.position.y = 2.5 * Math.cos(theta);
+
+        rectangle.rotation.x = Math.PI / 2; // original rotation
+        rectangle.rotation.y = Math.PI / 2 - theta; // original rotation
+        rectangle.rotation.z = 0; // original rotation
+
         // rectangle.material.color.set(0xffffff); // Blue
       });
     }
