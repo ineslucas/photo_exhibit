@@ -6,7 +6,7 @@ I've always wanted a place on the inter-webs to showcase my photography. This is
 http://www.memorylab.space
 
 **Stack**
-Using esbuild, jsbundling-rails, Active Storage, Yarn to add package managers and WebGL/Three.JS.
+Using WebGL/Three.JS, esbuild, jsbundling-rails, Active Storage, Yarn to add package managers and Bootstrap.
 
 **How to fork**
 Start your server with ./bin/dev.
