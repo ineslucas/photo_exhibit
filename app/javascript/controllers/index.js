@@ -7,5 +7,8 @@ import { application } from "./application"
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
+import MenuController from "./menu_controller"
+application.register("menu", MenuController)
+
 import ThreejsController from "./threejs_controller"
 application.register("threejs", ThreejsController)
