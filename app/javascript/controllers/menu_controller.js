@@ -11,6 +11,8 @@ import LogoutButton from "../images/LogoutButton.png"
 export default class extends Controller {
   static targets = [ "menu", "icon", "blur", "shapes" ]
 
+  hasInitializedPhysics = false;
+
   get isUserSignedIn() {
     return this.shapesTarget.dataset.userSignedIn === "true";
   }
@@ -19,7 +21,11 @@ export default class extends Controller {
     this.menuTarget.classList.remove("d-none");
     this.blurTarget.classList.remove("d-none");
     this.iconTarget.classList.add("d-none");
-    this.initializePhysics();
+
+    if (!this.hasInitializedPhysics) {
+      this.initializePhysics();
+      this.hasInitializedPhysics = true;
+    }
   }
 
   close() {
