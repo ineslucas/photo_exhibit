@@ -20,16 +20,7 @@
   <div id="menu" data-menu-target="menu" class="d-none">
     <div class="">
       <i data-action="click->menu#close" class="fa-solid fa-xmark"></i>
-
-      <%# unless current_page?(new_user_session_path) %>
-        <%# if user_signed_in? %>
-          <%# <%= link_to "Log out", destroy_user_session_path, data: {turbo_method: :delete} %>
-        <%# else %>
-          <%# <%= link_to "Login", new_user_session_path %>
-        <%# <% end %>
-      <%# <% end %>
     </div>
-
   </div>
 
   <div data-menu-target="blur" class="d-none">
