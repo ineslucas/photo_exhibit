@@ -34,6 +34,10 @@ export default class extends Controller {
     this.iconTarget.classList.remove("d-none");
   }
 
+  signIn() {
+    window.location.href = '/users/sign_in';
+  }
+
   signOut() {
     fetch('/users/sign_out', {
       method: 'DELETE',
@@ -116,6 +120,18 @@ export default class extends Controller {
       }
     })
 
+    const addNewPhoto = Matter.Bodies.rectangle(70, 500, 133, 40, { // x, y, width, height
+      render: {
+        fillStyle: "#671069",
+        chamfer: { radius: 20 },
+        sprite: {
+          texture: LogoutButton,
+          yScale: 0.5,
+          xScale: 0.5
+        }
+      }
+    })
+
     const wallOptions = { isStatic: true, render: { visible: true } };
     const ground = Matter.Bodies.rectangle(w / 2, h + 50, w + 100, 100, wallOptions);
     const ceiling = Matter.Bodies.rectangle(w / 2, -50, w + 100, 100, wallOptions);
@@ -162,8 +178,13 @@ export default class extends Controller {
 
     sectionTag.addEventListener("mousedown" , () => {
       if (Matter.Query.point([logout], this.currentMousePosition).length > 0) {
-        // If yes, call the signOut function
         this.signOut();
+      }
+    });
+
+    sectionTag.addEventListener("mousedown", () => {
+      if (Matter.Query.point([login], this.currentMousePosition).length > 0) {
+        this.signIn();
       }
     });
 
