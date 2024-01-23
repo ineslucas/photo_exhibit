@@ -34,6 +34,19 @@ export default class extends Controller {
     this.iconTarget.classList.remove("d-none");
   }
 
+  signOut() {
+    fetch('/users/sign_out', {
+      method: 'DELETE',
+      headers: {
+        'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content
+      }
+    }).then(response => {
+      if (response.ok) {
+        window.location = '/'; // Redirecting after logout
+      }
+    });
+  }
+
   // unless you I need to use these variables outside intializePhysics, I don't need to declare them as instance variables (using this.)
   initializePhysics() {
     const sectionTag = this.shapesTarget;
@@ -144,6 +157,14 @@ export default class extends Controller {
         shape.render.sprite = null;
         shape.render.fillStyle = "red";
       });
+      this.currentMousePosition = { x: event.clientX, y: event.clientY };
+    });
+
+    sectionTag.addEventListener("mousedown" , () => {
+      if (Matter.Query.point([logout], this.currentMousePosition).length > 0) {
+        // If yes, call the signOut function
+        this.signOut();
+      }
     });
 
     // Run the renderer
