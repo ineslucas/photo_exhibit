@@ -2,7 +2,13 @@ class PhotosController < ApplicationController
   before_action :authenticate_user!, except: [:index, :find_photo]
 
   def index
-    @photos = Photo.all
+    # @photos = Photo.all # All photos for all users
+    if user_signed_in?
+      @photos = current_user.photos # Only current user's photos
+      redirect_to new_photo_path if @photos.empty?
+    else
+      @photos = User.first.photos # First user's photos as a default
+    end
   end
 
   def new #view, which I eventually want to turn into a modal, using Turbo Frames and Streams
@@ -29,10 +35,9 @@ class PhotosController < ApplicationController
 
   def edit
     @photo = Photo.find(params[:id])
-    # TODO - readd once I have users - inital 3 photos appear to be under a different user
-    # if @photo.user != current_user
-    #  redirect_to photos_path, notice: "You can only edit your own photos."
-    # end
+    if @photo.user != current_user
+     redirect_to photos_path, notice: "You can only edit your own photos."
+    end
   end
 
   def update
