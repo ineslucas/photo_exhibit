@@ -31,23 +31,11 @@ class PhotosController < ApplicationController
           @photos.each(&:save!)
           redirect_to photos_path, notice: "Photos were successfully added."
         else
+          # When not all fields are present,
+          flash.now[:alert] = "Don't forget to add all the details!"
           render :new
         end
       end
-
-
-      # Extract individual photo attributes from the nested params[:photo]
-      # photo_params[:photo].each do |id, attributes|
-      #   photo = Photo.new(attributes)
-      #   photo.user = current_user
-
-      #   unless photo.save
-      #     redirect_to new_photo_path, alert: 'Try to add a photo this time.'
-      #     return # Exit early if any photo fails to save
-      #   end
-      # end
-
-
     else
       # "@photo = current_user.photos.build(photo_params)" is a more concise version of the first 2 lines
       # "build" also initializes the object with the user_id, same as "new"
@@ -56,9 +44,9 @@ class PhotosController < ApplicationController
       if @photo.save
         redirect_to photos_path, notice: "Photo was successfully added."
       else
-        # render :new
-        redirect_to new_photo_path, alert: 'Try to add a photo this time.'
-        # downside of redirect_to is that it doesn't keep the journal entry text
+        # When not all fields are present,
+        flash.now[:alert] = "Don't forget to add all the details!"
+        render :new
       end
     end
   rescue ActiveRecord::RecordInvalid

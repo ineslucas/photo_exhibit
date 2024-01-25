@@ -287,7 +287,7 @@ export default class extends Controller {
     });
 
     /** Creating Rectangles & Debug Variables */
-    this.rectangles = this.addRectanglesToCircle(this.allPhotosData.length, 2.5); // Add as many rectangles as imageURLs exist
+    this.rectangles = this.addRectanglesToCircle(this.allPhotosData.length, 2.5); // Add as many rectangles as imageURLs exist // 2.5 OG
     // this.rectangles.forEach((rectangle) => {
     //   this.gui.add(rectangle.rotation, 'y').min(- 3).max(3).step(0.01).name('rotationY');
     // });
