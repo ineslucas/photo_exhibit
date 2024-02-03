@@ -1,0 +1,70 @@
+.devise-container{
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two columns of equal width */
+}
+
+.child-container{
+  padding: 15px;
+}
+
+.left-devise-container{
+  margin-left: 15px;
+  max-width: 300px;
+  color: $orange;
+}
+
+.right-devise-container{
+  max-width: 400px;
+}
+
+.form-inputs {
+  margin-bottom: 1.5rem;
+}
+
+.form-inputs label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-family: "Inter", sans-serif;
+  color: $orange;
+}
+
+.form-inputs input[type="text"],
+.form-inputs input[type="password"],
+.form-inputs input[type="email"] {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid $orange;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-family: "Inter", sans-serif;
+  transition: border-color 0.3s ease;
+}
+
+.form-inputs input[type="text"]:focus,
+.form-inputs input[type="password"]:focus,
+.form-inputs input[type="email"]:focus {
+  border-color: $purple;
+  outline: none;
+}
+
+.form-inputs input[type="password"]:hint {
+  color: $orange;
+}
+
+.form-actions {
+  text-align: center;
+}
+
+.devise-btn {
+  background-color: $orange;
+  color: white;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: $purple;
+}
