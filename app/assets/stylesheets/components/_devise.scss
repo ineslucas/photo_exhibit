@@ -47,7 +47,7 @@
   outline: none;
 }
 
-.form-inputs input[type="password"]:hint {
+.form-text {
   color: $orange;
 }
 
@@ -67,4 +67,15 @@
 
 .login-btn:hover {
   background-color: $purple;
+}
+
+@media (max-width: 768px) {
+  .devise-container {
+    grid-template-columns: 1fr; /* Changes to single column for screens <= 768px wide */
+  }
+  .left-devise-container,
+  .right-devise-container {
+    max-width: none;
+    margin-left: 0; /* Reset the left margin for the left container */
+  }
 }
