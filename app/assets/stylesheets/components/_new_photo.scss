@@ -1,0 +1,101 @@
+/* FOR 8 PHOTOS */
+.eight-new-photos-container {
+  margin: 0px 32px 20px 32px; /* top, right, bottom, left */
+}
+
+#welcome-message {
+  color: $orange;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columns */
+  grid-template-rows: repeat(2, 1fr); /* 2 rows */
+  grid-gap: 50px;
+  margin-bottom: 40px;
+  margin-top: 50px;
+}
+
+.save-eight-photos-btn {
+  background-color: $orange;
+  color: white;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: $purple;
+    color: white;
+  }
+}
+
+/* ERROR STYLING */
+
+
+/* CLASSES COMMON TO BOTH NEW PHOTO AND EDIT PHOTO */
+// Title
+.field input::placeholder,
+.field input::-webkit-input-placeholder {
+  color: $orange;
+}
+
+// Tilte + Journal Entry
+.field input[type="text"],
+.field textarea {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid $orange;
+  border-radius: 20px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  margin-bottom: 10px;
+
+  &:focus {
+    border-color: $purple;
+    outline: none;
+  }
+}
+
+// Image File Uploader
+.choose-image-button {
+  border: 1px solid $orange;
+  border-radius: 20px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 10px;
+}
+
+// .field input[type="file"] {
+
+// }
+
+// Journal Entry
+.field textarea::placeholder,
+.field textarea::-webkit-input-placeholder {
+  color: $orange;
+}
+
+// Date taken
+.field label {
+  color: $orange;
+}
+
+.field select {
+  margin-top: 10px;
+  color: $orange;
+  padding: 10px 15px;
+  border: 1px solid $orange;
+  border-radius: 20px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+
+  &:focus {
+    border-color: $purple;
+    outline: none;
+  }
+}

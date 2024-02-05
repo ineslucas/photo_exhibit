@@ -1,22 +1,23 @@
-<div class="container mx-3">
-  <h2>Log in</h2>
-
-  <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-    <div class="form-inputs">
-      <%= f.input :email,
-                  required: false,
-                  autofocus: true,
-                  input_html: { autocomplete: "email" } %>
-      <%= f.input :password,
-                  required: false,
-                  input_html: { autocomplete: "current-password" } %>
-      <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
-    </div>
-
-    <div class="form-actions">
-      <%= f.button :submit, "Log in" %>
-    </div>
-  <% end %>
-
-  <%= render "devise/shared/links" %>
+<div class="devise-container">
+  <div class="child-container left-devise-container">
+    Welcome back to your digital gallery, showcasing all your photographic memories. Conceived and coded by Inês Lucas.
+  </div>
+  <div class="child-container right-devise-container">
+    <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <div class="form-inputs">
+        <%= f.input :email,
+                    required: false,
+                    autofocus: true,
+                    input_html: { autocomplete: "email" } %>
+        <%= f.input :password,
+                    required: false,
+                    input_html: { autocomplete: "current-password" } %>
+        <%= f.input :remember_me, as: :boolean, input_html: { class: 'toggle' } if devise_mapping.rememberable? %>
+      </div>
+      <%= render "devise/shared/links" %>
+      <div class="form-actions">
+        <%= f.button :submit, "Log in", class: "devise-login-btn devise-btn" %>
+      </div>
+    <% end %>
+  </div>
 </div>

@@ -1,51 +1,60 @@
 <% if current_user.photos.empty? %>
-  <p>Welcome. Please add 8 photos to start with.</p>
+  <div class="eight-new-photos-container">
+    <p id="welcome-message">Welcome. Please add 8 photos to start with.</p>
 
-  <%= form_with url: photos_path, local: true, data: { turbo: false } do |form| %>
+    <%= form_with url: photos_path, local: true, data: { turbo: false } do |form| %>
+      <% if @photos.any? && @photos.all? { |photo| photo.errors.any? } %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@photos.flat_map(&:errors).count, "error") %> prohibited these photos from being saved:</h2>
 
-    <% if @photos.any? && @photos.all? { |photo| photo.errors.any? } %>
-      <div id="error_explanation">
-        <h2><%= pluralize(@photos.flat_map(&:errors).count, "error") %> prohibited these photos from being saved:</h2>
-
-        <ul>
-          <% @photos.each do |photo| %>
-            <% photo.errors.full_messages.each do |message| %>
-              <li><%= message %></li>
+          <ul>
+            <% @photos.each do |photo| %>
+              <% photo.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
             <% end %>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
-
-    <% @photos.each_with_index do |photo, index| %>
-      <%= form.fields_for "photos[]", photo, index: index do |photo_form| %>
-        <div class="field"> <%# temp note: undefined class tbc%>
-          <%= photo_form.label :title %>
-          <%= photo_form.text_field :title %>
-        </div>
-
-         <div>
-          <%# might need to be changed %>
-          <%= photo_form.label :image %>
-          <%= photo_form.file_field :image %>
-        </div>
-
-        <div class="field">
-          <%= photo_form.label :journal_entry %>
-          <%= photo_form.text_area :journal_entry %>
-        </div>
-
-        <div class="field">
-          <%= photo_form.label :date_taken %>
-          <%= photo_form.date_select :date_taken %>
+          </ul>
         </div>
       <% end %>
-    <% end %>
 
-    <div class="actions">
-      <%= form.submit %>
-    </div>
-  <% end %>
+      <div class="grid-container">
+        <% @photos.each_with_index do |photo, index| %>
+          <div class="grid-item">
+            <%= form.fields_for "photos[]", photo, index: index do |photo_form| %>
+              <div class="photo-form-container">
+                <div class="field">
+                  <%= photo_form.text_field :title, placeholder: "Title your photo" %>
+                </div>
+
+                <div class="field">
+                  <label class="choose-image-button">
+                    Choose photo
+                    <span style="display: none;">
+                      <%= photo_form.file_field :image %>
+                    </span>
+                  </label>
+                  <p>No photo chosen</p>
+                </div>
+
+                <div class="field">
+                  <%= photo_form.text_area :journal_entry, placeholder: "Journal entry" %>
+                </div>
+
+                <div class="field">
+                  <%= photo_form.label :date_taken %> <br>
+                  <%= photo_form.date_select :date_taken %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="actions">
+        <%= form.submit "Save", class: "save-eight-photos-btn" %>
+      </div>
+    <% end %>
+  </div>
 
 <% else %>
   <%# FORM TO ADD 1 PHOTO AT A TIME %>
@@ -71,7 +80,7 @@
       <%# , required: true %>
     </div>
 
-    <div>
+    <div class="field">
       <%# might need to be changed %>
       <%= form.label :image %>
       <%= form.file_field :image %>

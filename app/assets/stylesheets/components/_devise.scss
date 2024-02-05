@@ -24,7 +24,6 @@
 .form-inputs label {
   display: block;
   margin-bottom: 0.5rem;
-  font-family: "Inter", sans-serif;
   color: $orange;
 }
 
@@ -36,7 +35,6 @@
   border: 1px solid $orange;
   border-radius: 50px;
   font-size: 1rem;
-  font-family: "Inter", sans-serif;
   transition: border-color 0.3s ease;
 }
 
@@ -54,7 +52,6 @@
 .form-actions {
   text-align: center;
 }
-
 .devise-btn {
   background-color: $orange;
   color: white;
@@ -63,6 +60,13 @@
   border-radius: 50px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+}
+.devise-login-btn {
+  margin-top: 40px;
+}
+
+.devise-signup-btn {
+  margin-top: 25px;
 }
 
 .devise-btn:hover {
@@ -77,6 +81,71 @@
   .left-devise-container,
   .right-devise-container {
     max-width: none;
-    margin-left: 0; /* Reset the left margin for the left container */
+    margin-left: 0;
   }
+
+  .child-container{
+    padding: 25px;
+  }
+}
+
+/* TOGGLE FOR REMEMBER ME */
+.toggle {
+  position: absolute;
+  transform: scale(0);
+}
+
+.toggle + label {
+  position: relative;
+  display: inline-block;
+  padding-left: 50px; // distance from margin to "Remember me"
+  margin-left: 0; /* removes left margin */
+}
+
+.toggle + label::before {
+  content: '';
+  display: block;
+  position: absolute;
+  cursor: pointer;
+  width: 36px;
+  height: 20px;
+  top: 0;
+  left: 0;
+  background-color: #EAEAEA;
+  border-radius: 50rem;
+}
+
+.toggle:checked + label::before {
+  background-color: $orange;
+}
+
+.toggle + label::after {
+  content: '';
+  display: block;
+  position: absolute;
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  top: 2px;
+  left: 2px;
+  background-color: white;
+  border-radius: 50%;
+  transition: left 0.2s ease;
+}
+
+.toggle:checked + label::after {
+  left: 18px;
+}
+
+.form-check {
+  margin-left: 0;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+/* DEVISE LINKS */
+.custom-link-devise {
+  color: $orange;
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
