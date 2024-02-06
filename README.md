@@ -13,12 +13,14 @@ Start your server with ./bin/dev.
 
 **Learning outcomes from this project:**
 - Full Stack Development in Rails
-- Three JS with Stimulus JS
+- Three JS inside Stimulus JS controller
 - JavaScript in Rails - passing values and data from database to view to Stimulus and back
 - Trigonometry
 - Image processing in development
 - Deploying with Heroku
 - Loading techniques for good performance
+- Matter JS inside Stimulus JS controller
+- Form Helper styling
 
 **Thank you to...**
 - [@disinnnn]([url](https://twitter.com/disinnnn)https://twitter.com/disinnnn) on Twitter for making great SVGs
