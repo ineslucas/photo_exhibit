@@ -3,6 +3,6 @@ class Photo < ApplicationRecord
   belongs_to :user
   validates :image, presence: true
   validates :title, presence: true
-  validates :journal_entry, presence: true
+  # validates :journal_entry, presence: true
   validates :date_taken, presence: true
 end

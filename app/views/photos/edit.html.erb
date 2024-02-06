@@ -1,4 +1,4 @@
-<h1>Photos#edit</h1>
+<h1>Edit</h1>
 
 <%= form_with(model: @photo, local: true) do |form| %>
   <% if @photo.errors.any? %>
@@ -25,13 +25,13 @@
   </div>
 
   <div class="field">
-    <%= form.label :journal_entry %>
-    <%= form.text_area :journal_entry %>
+    <%= form.label :date_taken %>
+    <%= form.date_select :date_taken %>
   </div>
 
   <div class="field">
-    <%= form.label :date_taken %>
-    <%= form.date_select :date_taken %>
+    <%= form.label :journal_entry %>
+    <%= form.text_area :journal_entry %>
   </div>
 
   <div class="actions">

@@ -6,7 +6,8 @@
 #welcome-message {
   color: $orange;
   font-size: 1.5rem;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
+  text-align: end;
 }
 
 .grid-container {
@@ -33,51 +34,139 @@
   }
 }
 
+/* MEDIA QUERIES */
+  /* For tablets */
+  @media (max-width: 1401px) {
+    .grid-container {
+      grid-template-columns: repeat(3, 1fr); /* 3 columns */
+      grid-template-rows: repeat(3, 1fr); /* 3 rows */
+    }
+  }
+
+  /* For smaller tablets */
+  @media (max-width: 1048px) {
+    .grid-container {
+      grid-template-columns: repeat(2, 1fr); /* 2 columns */
+      grid-template-rows: repeat(4, 1fr); /* 4 rows */
+    }
+  }
+
+  @media (max-width: 768px) {
+    #welcome-message{
+      font-size: 1rem;
+    }
+  }
+  /* For iPhone */
+  @media (max-width: 708px) {
+    .grid-container {
+      grid-template-columns: repeat(1, 1fr); /* 1 column */
+      grid-template-rows: repeat(8, 1fr); /* 8 rows */
+    }
+
+    #welcome-message{
+      font-size: 0.75rem;
+    }
+  }
+
 /* ERROR STYLING */
+// .............................................
 
-
-/* CLASSES COMMON TO BOTH NEW PHOTO AND EDIT PHOTO */
+/* FORM FOR NEW PHOTO AND EDIT PHOTO */
 // Title
 .field input::placeholder,
 .field input::-webkit-input-placeholder {
   color: $orange;
 }
 
-// Tilte + Journal Entry
-.field input[type="text"],
-.field textarea {
+// Title
+.photo-number {
+  color: $orange;
+  font-family: "Pilowlava", sans-serif;
+  font-size: 60px;
+  margin-right: 10px; /* Spacing between the photo number and the text field */
+}
+
+.field {
+  position: relative;
+}
+
+.field input[type="text"] {
   width: 100%;
-  padding: 10px 15px;
-  border: 1px solid $orange;
-  border-radius: 20px;
-  font-size: 1rem;
+  padding: 0px 0px;
+  border: none;
+  font-size: 28px;
   transition: border-color 0.3s ease;
   margin-bottom: 10px;
+  color: $purple;
+  background-color: transparent;
 
   &:focus {
     border-color: $purple;
+    color: $purple;
     outline: none;
   }
 }
 
-// Image File Uploader
-.choose-image-button {
-  border: 1px solid $orange;
-  border-radius: 20px;
-  padding: 10px 15px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-bottom: 10px;
+.field input[type="text"]:focus {
+  outline: none; /* Removing default focus outline */
 }
 
-// .field input[type="file"] {
+.field input[type="text"] + .title-border {
+  position: absolute;
+  bottom: 11.5%; /* Position the border at the bottom */
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: $orange; /* Color of the border */
+}
 
+.field input[type="text"]:focus + .title-border {
+  background-color: $purple;
+}
+
+.field input[type="text"]:valid + .title-border {
+  background-color: $purple; /* Style for title-border when input is filled out */
+}
+
+/* Style for title-border when input is empty and required */
+.field input[type="text"]:required:invalid + .title-border {
+  background-color: $red; /* Color of the border when input is invalid */
+}
+
+// Image File Uploader
+.choose-image-button {
+  position: relative; /* in relation to ::before */
+  margin-bottom: 25px;
+}
+
+.choose-image-button::before {
+  content: 'Choose file'; /* Pseudo-element */
+  position: absolute;
+  top: 0; /* Positioned at the top */
+  left: 0; /* Positioned at the left */
+  width: 96.5px;
+  height: 100%;
+  border-radius: 2.5px;
+  border: 1px solid $orange;
+  background-color: white;
+  z-index: 1; /* Placing it on top of the file input */
+  padding: 2px 5px 2px 7px;
+}
+
+.choose-image-button:hover::before {
+  color: $purple;
+  border: 1px solid $purple;
+}
+
+// 🍓
+// .input[type="file" i]:valid + .choose-image-button::before {
+//   color: $purple;
+//   border: 1px solid $purple;
 // }
 
-// Journal Entry
-.field textarea::placeholder,
-.field textarea::-webkit-input-placeholder {
-  color: $orange;
+// .field input[type="file"] // same as input[type="file" i]
+input[type="file" i] { /* linked to the original "Choose File" input" */
+  border-radius: 10px;
 }
 
 // Date taken
@@ -93,9 +182,47 @@
   border-radius: 20px;
   font-size: 1rem;
   transition: border-color 0.3s ease;
+  margin-bottom: 10px;
 
   &:focus {
     border-color: $purple;
+    color: $purple;
     outline: none;
   }
+}
+
+// .field select:valid:not(:placeholder-shown) { // doesn't work properly because date is automatically filled with a placeholder/prompt - tbc
+//   border: 1px solid $purple;
+//   color: $purple;
+// }
+
+.field select.valid {
+  border: 1px solid $purple;
+  color: $purple;
+}
+
+// Journal Entry
+.field textarea {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid $orange;
+  border-radius: 20px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  color: $purple;
+
+  &:focus {
+    border-color: $purple;
+    color: $orange;
+    outline: none;
+  }
+}
+
+.field textarea::placeholder,
+.field textarea::-webkit-input-placeholder {
+  color: $orange;
+}
+
+.field textarea:valid {
+  border: 1px solid $purple;
 }
