@@ -29,11 +29,7 @@
                 </div>
 
                 <div class="field">
-                  <label class="choose-image-button">
-                    <span>
-                      <%= photo_form.file_field :image, required: true %>
-                    </span>
-                  </label>
+                  <%= photo_form.file_field :image, required: true %>
                 </div>
 
                 <div class="field">
@@ -73,29 +69,25 @@
       </div>
     <% end %>
 
-    <div class="field"> <%# temp note: undefined class tbc%>
-      <%= form.label :title %>
-      <%= form.text_field :title %>
-      <%# , required: true %>
+    <div class="field">
+      <%= form.text_field :title, placeholder: "Title your photo here", required: true %>
+      <div class="title-border"></div>
     </div>
 
     <div class="field">
-      <%= form.label :image %>
-      <%= form.file_field :image %>
+      <%= form.file_field :image, required: true %>
     </div>
 
     <div class="field">
-      <%= form.label :date_taken %>
-      <%= form.date_select :date_taken %>
+      <%= form.date_select :date_taken, required: true %>
     </div>
 
     <div class="field">
-      <%= form.label :journal_entry %>
-      <%= form.text_area :journal_entry %>
+      <%= form.text_area :journal_entry, placeholder: "Optional journal entry", required: true %>
     </div>
 
     <div class="actions">
-      <%= form.submit %>
+      <%= form.submit "Save", class: "save-eight-photos-btn" %>
     </div>
   <% end %>
 

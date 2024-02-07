@@ -69,10 +69,10 @@
   }
 
 /* ERROR STYLING */
-// .............................................
+// TBD
 
 /* FORM FOR NEW PHOTO AND EDIT PHOTO */
-// Title
+// All fields
 .field input::placeholder,
 .field input::-webkit-input-placeholder {
   color: $orange;
@@ -134,39 +134,38 @@
 }
 
 // Image File Uploader
-.choose-image-button {
-  position: relative; /* in relation to ::before */
+.input[type=file] {
+  color: $orange;
   margin-bottom: 25px;
 }
 
-.choose-image-button::before {
-  content: 'Choose file'; /* Pseudo-element */
-  position: absolute;
-  top: 0; /* Positioned at the top */
-  left: 0; /* Positioned at the left */
-  width: 96.5px;
-  height: 100%;
-  border-radius: 2.5px;
-  border: 1px solid $orange;
-  background-color: white;
-  z-index: 1; /* Placing it on top of the file input */
-  padding: 2px 5px 2px 7px;
-}
-
-.choose-image-button:hover::before {
-  color: $purple;
-  border: 1px solid $purple;
-}
-
-// 🍓
-// .input[type="file" i]:valid + .choose-image-button::before {
-//   color: $purple;
-//   border: 1px solid $purple;
-// }
-
+/* Links to the original "Choose File" input" */
 // .field input[type="file"] // same as input[type="file" i]
-input[type="file" i] { /* linked to the original "Choose File" input" */
-  border-radius: 10px;
+input[type="file" i] {
+  color: $orange;
+  margin-bottom: 50px;
+}
+
+  // previous button
+  .choose-image-button::before {
+    border-radius: 2.5px;
+    border: 1px solid $orange;
+    background-color: white;
+    padding: 2px 5px 2px 7px;
+  }
+
+input[type=file]::file-selector-button {
+  margin-right: 15px; /* for some distance from file input */
+  border: none;
+  background: $orange;
+  padding: 10px 20px;
+  border-radius: 20px; // instead of 10px or original 2.5px
+  color: #fff;
+  cursor: pointer;
+}
+
+input[type=file]::file-selector-button:hover {
+  background: $light-orange;
 }
 
 // Date taken
