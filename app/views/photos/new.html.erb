@@ -1,5 +1,5 @@
 <% if current_user.photos.empty? %>
-  <div class="eight-new-photos-container">
+  <div class="full-form-photos-container">
     <p id="welcome-message">Welcome. Please add 8 photos to get started.</p>
 
     <%= form_with url: photos_path, local: true, data: { turbo: false } do |form| %>
@@ -53,43 +53,49 @@
 
 <% else %>
   <%# FORM TO ADD 1 PHOTO AT A TIME %>
-  <h1>New Photo</h1>
+  <div class="full-form-photos-container">
 
-  <%= form_with(model: @photo, local: true, data: { turbo: false }) do |form| %>
+    <div class="container-new">
+      <%# LEFT EMPTY CONTAINER %>
+      <div class="child-container"></div>
+      <%# RIGHT CONTAINER %>
+      <div class="child-container right-one-form-container">
+        <%= form_with(model: @photo, local: true, data: { turbo: false }) do |form| %>
 
-    <% if @photo && @photo.errors.any? %>
-      <div id="error_explanation">
-        <h2><%= pluralize(@photo.errors.count, "error") %> prohibited this photo from being saved:</h2>
+          <% if @photo && @photo.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@photo.errors.count, "error") %> prohibited this photo from being saved:</h2>
 
-        <ul>
-        <% @photo.errors.full_messages.each do |message| %> <%# temp note: that deanin does it a little differently here%>
-          <li><%= message %></li>
+              <ul>
+              <% @photo.errors.full_messages.each do |message| %> <%# temp note: that deanin does it a little differently here%>
+                <li><%= message %></li>
+              <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <div class="field">
+            <%= form.text_field :title, placeholder: "Title your photo here", required: true, class: "single-photo-title" %>
+          </div>
+
+          <div class="field">
+            <%= form.file_field :image, required: true %>
+          </div>
+
+          <div class="field">
+            <%= form.date_select :date_taken, required: true %>
+          </div>
+
+          <div class="field">
+            <%= form.text_area :journal_entry, placeholder: "Optional journal entry", required: true %>
+          </div>
+
+          <div class="actions">
+            <%= form.submit "Save new photo", class: "save-one-photo-btn", style: "margin-bottom: 20px; margin-top: 20px;" %>
+            <%= link_to 'Back', photos_path %>
+          </div>
         <% end %>
-        </ul>
       </div>
-    <% end %>
-
-    <div class="field">
-      <%= form.text_field :title, placeholder: "Title your photo here", required: true %>
-      <div class="title-border"></div>
     </div>
-
-    <div class="field">
-      <%= form.file_field :image, required: true %>
-    </div>
-
-    <div class="field">
-      <%= form.date_select :date_taken, required: true %>
-    </div>
-
-    <div class="field">
-      <%= form.text_area :journal_entry, placeholder: "Optional journal entry", required: true %>
-    </div>
-
-    <div class="actions">
-      <%= form.submit "Save", class: "save-eight-photos-btn" %>
-    </div>
-  <% end %>
-
-  <%= link_to 'Back', photos_path %>
+  </div>
 <% end %>

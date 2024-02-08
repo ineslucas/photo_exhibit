@@ -3,7 +3,7 @@
   <main style="padding-left: 27px; padding-right: 27px;">
     <div>
       <% last_updated_photo = @photos.order(updated_at: :desc).last %>
-      <div data-threejs-target="photoInfo" style="position: fixed; bottom: 20px; left: 27px; width: 90%; display: flex; flex-direction: column-reverse; height: 100vh; overflow: auto; pointer-events: none;"> <%# All HTML in this div will be replaced %>
+      <div data-threejs-target="photoInfo" style="position: fixed; bottom: 20px; left: 27px; width: 90%; display: flex; flex-direction: column-reverse; height: 100vh; overflow: auto; pointer-events: none; color: #f1440f;"> <%# All HTML in this div will be replaced %>
         <span style="pointer-events: auto;"><%= last_updated_photo.journal_entry %></span>
         <span style="pointer-events: auto;"><b><%= last_updated_photo.title %></b></span>
         <%# <%= cl_image_tag last_updated_photo.image.key, width: 300, crop: :fill %>
