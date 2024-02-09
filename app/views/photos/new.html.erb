@@ -1,4 +1,5 @@
 <% if current_user.photos.empty? %>
+  <%# FORM TO ADD 8 PHOTOS AT ONCE %>
   <div class="full-form-photos-container">
     <p id="welcome-message">Welcome. Please add 8 photos to get started.</p>
 
@@ -37,7 +38,7 @@
                 </div>
 
                 <div class="field">
-                  <%= photo_form.text_area :journal_entry, placeholder: "Optional journal entry", required: true %>
+                  <%= photo_form.text_area :journal_entry, placeholder: "Journal entry", required: true %>
                 </div>
               </div>
             <% end %>
@@ -67,7 +68,7 @@
               <h2><%= pluralize(@photo.errors.count, "error") %> prohibited this photo from being saved:</h2>
 
               <ul>
-              <% @photo.errors.full_messages.each do |message| %> <%# temp note: that deanin does it a little differently here%>
+              <% @photo.errors.full_messages.each do |message| %> <%# temp note: deanin does it a little differently here%>
                 <li><%= message %></li>
               <% end %>
               </ul>
@@ -78,7 +79,7 @@
             <%= form.text_field :title, placeholder: "Title your photo here", required: true, class: "single-photo-title" %>
           </div>
 
-          <div class="field">
+          <div class="field choose-one-photo-btn">
             <%= form.file_field :image, required: true %>
           </div>
 
@@ -87,12 +88,12 @@
           </div>
 
           <div class="field">
-            <%= form.text_area :journal_entry, placeholder: "Optional journal entry", required: true %>
+            <%= form.text_area :journal_entry, placeholder: "Journal entry", required: true %>
           </div>
 
           <div class="actions">
             <%= form.submit "Save new photo", class: "save-one-photo-btn", style: "margin-bottom: 20px; margin-top: 20px;" %>
-            <%= link_to 'Back', photos_path %>
+            <%= link_to 'Back', photos_path, class: "back-btn" %>
           </div>
         <% end %>
       </div>
