@@ -3,7 +3,7 @@
   grid-template-columns: 1fr 1fr; /* Two columns of equal width */
 }
 
-.child-container{ // shared with new_photo form
+.child-container { // shared with new_photo form
   padding: 15px;
 }
 
@@ -145,9 +145,31 @@
   margin-bottom: 0;
 }
 
+.input-with-error {
+  color: black; /* or any color you prefer */
+}
+
 /* DEVISE LINKS */
 .custom-link-devise {
   color: $orange;
   text-decoration: none;
   transition: color 0.3s ease;
+  opacity: 0.5;
+  position: relative; /* For the underline */
+
+  &:hover {
+    color: $orange;
+    opacity: 1;
+  }
+
+  &::after { /* Underline */
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 1px;
+    background-color: $orange;
+    opacity: 1;
+  }
 }

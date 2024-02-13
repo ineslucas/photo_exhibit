@@ -18,6 +18,23 @@
         </div>
       <% end %>
 
+      <%#
+<% if @photos.any? && @photos.all? { |photo| photo.errors.any? } %>
+<%#    <div id="error_explanation">
+<%#      <h2><%= pluralize(@photos.flat_map(&:errors).count, "error") %> prohibited these photos from being saved:</h2>
+
+<%#      <ul>
+<%#        <% @photos.each do |photo| %>
+<%#          <% photo.errors.full_messages.each do |message| %>
+<%#            <li><%= message %></li>
+<%#          <% end %>
+<%#        <% end %>
+<%#      </ul>
+<%#    </div>
+<% end %>
+%>
+
+
       <div class="grid-container">
         <% @photos.each_with_index do |photo, index| %>
           <div class="grid-item">
@@ -34,7 +51,7 @@
                 </div>
 
                 <div class="field">
-                  <%= photo_form.date_select :date_taken, required: true %>
+                  <%= photo_form.date_select :date_taken, required: true, prompt: { year: 'YYYY', month: 'MM', day: 'DD' } %>
                 </div>
 
                 <div class="field">
@@ -58,9 +75,9 @@
 
     <div class="container-new">
       <%# LEFT EMPTY CONTAINER %>
-      <div class="child-container"></div>
+      <div class="child-container no-padding"></div>
       <%# RIGHT CONTAINER %>
-      <div class="child-container right-one-form-container">
+      <div class="child-container right-one-form-container no-padding">
         <%= form_with(model: @photo, local: true, data: { turbo: false }) do |form| %>
 
           <% if @photo && @photo.errors.any? %>
@@ -84,7 +101,8 @@
           </div>
 
           <div class="field">
-            <%= form.date_select :date_taken, required: true %>
+            <%= form.date_select :date_taken, required: true, prompt: { year: 'YYYY', month: 'MM', day: 'DD' } %>
+
           </div>
 
           <div class="field">

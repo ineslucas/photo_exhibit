@@ -1,12 +1,12 @@
 <div class="full-form-photos-container">
     <div class="container-new">
       <%# LEFT CONTAINER %>
-      <div class="child-container" style="padding-left: 0px;">
-        <%= image_tag(@photo.image, style: "max-height: 375px") %>
+      <div class="child-container no-padding" style="padding-left: 0px;">
+        <%= image_tag(@photo.image, style: "max-height: 375px;") %>
       </div>
 
       <%# RIGHT CONTAINER %>
-      <div class="child-container right-one-form-container">
+      <div class="child-container right-one-form-container no-padding-left-right">
         <%= form_with(model: @photo, local: true, data: { turbo: false }) do |form| %>
 
           <% if @photo && @photo.errors.any? %>

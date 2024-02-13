@@ -96,13 +96,30 @@
   max-width: 500px;
 }
 
+.child-container img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.right-one-form-container form {
+  width: 100%; /* Ensure the form fills its container's width */
+  max-width: 500px; /* Limit the maximum width of the form */
+  margin: 0 auto; /* Center the form horizontally */
+}
+
 @media (max-width: 966px) {
   .container-new {
     grid-template-columns: 1fr; /* Single column layout */
   }
 
-  .child-container{
-    max
+  .no-padding {
+    padding: 0;
+  }
+
+  .no-padding-left-right {
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 
