@@ -4,36 +4,21 @@
     <p id="welcome-message">Welcome. Please add 8 photos to get started.</p>
 
     <%= form_with url: photos_path, local: true, data: { turbo: false } do |form| %>
-      <% if @photos.any? && @photos.all? { |photo| photo.errors.any? } %>
-        <div id="error_explanation">
-          <h2><%= pluralize(@photos.flat_map(&:errors).count, "error") %> prohibited these photos from being saved:</h2>
-
-          <ul>
-            <% @photos.each do |photo| %>
-              <% photo.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
-              <% end %>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
 
       <%#
-<% if @photos.any? && @photos.all? { |photo| photo.errors.any? } %>
-<%#    <div id="error_explanation">
-<%#      <h2><%= pluralize(@photos.flat_map(&:errors).count, "error") %> prohibited these photos from being saved:</h2>
+      <% if @photos.any? && @photos.all? { |photo| photo.errors.any? } %>
+      <%#    <div id="error_explanation">
+      <%#      <h2><%= pluralize(@photos.flat_map(&:errors).count, "error") prohibited these photos from being saved:</h2> %>
 
-<%#      <ul>
-<%#        <% @photos.each do |photo| %>
-<%#          <% photo.errors.full_messages.each do |message| %>
-<%#            <li><%= message %></li>
-<%#          <% end %>
-<%#        <% end %>
-<%#      </ul>
-<%#    </div>
-<% end %>
-%>
-
+      <%#      <ul>
+      <%#        <% @photos.each do |photo| %>
+      <%#          <% photo.errors.full_messages.each do |message| %>
+      <%#           <li><%= message</li> %>
+      <%#          <% end %>
+      <%#        <% end %>
+      <%#      </ul>
+      <%#    </div>
+      <% end %>
 
       <div class="grid-container">
         <% @photos.each_with_index do |photo, index| %>
@@ -80,17 +65,18 @@
       <div class="child-container right-one-form-container no-padding">
         <%= form_with(model: @photo, local: true, data: { turbo: false }) do |form| %>
 
-          <% if @photo && @photo.errors.any? %>
-            <div id="error_explanation">
-              <h2><%= pluralize(@photo.errors.count, "error") %> prohibited this photo from being saved:</h2>
-
-              <ul>
-              <% @photo.errors.full_messages.each do |message| %> <%# temp note: deanin does it a little differently here%>
-                <li><%= message %></li>
-              <% end %>
-              </ul>
-            </div>
-          <% end %>
+          <%# <% if @photo && @photo.errors.any? %>
+            <%# <div id="error_explanation"> %>
+              <%# <h2><%= pluralize(@photo.errors.count, "error") %>
+                    <%# prohibited this photo from being saved:</h2> %>
+              <%# <ul> %>
+              <%# <% @photo.errors.full_messages.each do |message| %>
+                <%# temp note: deanin does it a little differently here%>
+                <%# <li><%= message</li> %>
+              <%# <% end %>
+              <%# </ul> %>
+            <%# </div> %>
+          <%# <% end %>
 
           <div class="field">
             <%= form.text_field :title, placeholder: "Title your photo here", required: true, class: "single-photo-title" %>
