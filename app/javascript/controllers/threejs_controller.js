@@ -10,7 +10,7 @@ export default class extends Controller {
   connect() {
     // console.log("Hello, Stimulus!", this.element); // console.log(THREE.OrbitControls); // console.log(GUI);
     this.handleResize();
-    this.handleFullscreen();
+    // this.handleFullscreen();
     this.rectangles = [];
     this.thetaValues = [];
     this.initThreeJS();
@@ -35,17 +35,17 @@ export default class extends Controller {
     });
   }
 
-  handleFullscreen() {
-    window.addEventListener('dblclick', () => {
-      if(!document.fullscreenElement) {
-        console.log('go fullscreen');
-        this.renderer.domElement.requestFullscreen(); // code line specific to Rails & Stimulus, otherwise we'd call requestFullscreen() directly on the canvas
-      } else {
-        console.log('leave fullscreen');
-        document.exitFullscreen();
-      }
-    });
-  }
+  // handleFullscreen() {
+  //   window.addEventListener('dblclick', () => {
+  //     if(!document.fullscreenElement) {
+  //       console.log('go fullscreen');
+  //       this.renderer.domElement.requestFullscreen(); // code line specific to Rails & Stimulus, otherwise we'd call requestFullscreen() directly on the canvas
+  //     } else {
+  //       console.log('leave fullscreen');
+  //       document.exitFullscreen();
+  //     }
+  //   });
+  // }
 
   initThreeJS() {
     /** Debug */
@@ -287,7 +287,7 @@ export default class extends Controller {
     });
 
     /** Creating Rectangles & Debug Variables */
-    this.rectangles = this.addRectanglesToCircle(this.allPhotosData.length, 2.5); // Add as many rectangles as imageURLs exist
+    this.rectangles = this.addRectanglesToCircle(this.allPhotosData.length, 2.5); // Add as many rectangles as imageURLs exist // 2.5 OG
     // this.rectangles.forEach((rectangle) => {
     //   this.gui.add(rectangle.rotation, 'y').min(- 3).max(3).step(0.01).name('rotationY');
     // });

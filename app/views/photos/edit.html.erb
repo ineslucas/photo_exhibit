@@ -1,42 +1,47 @@
-<h1>Photos#edit</h1>
+<div class="full-form-photos-container">
+    <div class="container-new">
+      <%# LEFT CONTAINER %>
+      <div class="child-container no-padding" style="padding-left: 0px;">
+        <%= image_tag(@photo.image, style: "max-height: 375px;") %>
+      </div>
 
-<%= form_with(model: @photo, local: true) do |form| %>
-  <% if @photo.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@photo.errors.count, "error") %> prohibited this photo from being saved:</h2>
+      <%# RIGHT CONTAINER %>
+      <div class="child-container right-one-form-container no-padding-left-right">
+        <%= form_with(model: @photo, local: true, data: { turbo: false }) do |form| %>
 
-      <ul>
-      <% @photo.errors.full_messages.each do |message| %> <%# temp note: that deanin does it a little differently here%>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+          <% if @photo && @photo.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@photo.errors.count, "error") %> prohibited this photo from being saved:</h2>
+
+              <ul>
+              <% @photo.errors.full_messages.each do |message| %> <%# temp note: deanin does it a little differently here%>
+                <li><%= message %></li>
+              <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <div class="field">
+            <%= form.text_field :title, placeholder: "Title your photo here", required: true, class: "single-photo-title" %>
+          </div>
+
+          <%# <div class="field choose-one-photo-btn"> %>
+            <%# <%= form.file_field :image, required: true %>
+          <%# </div> %>
+
+          <div class="field">
+            <%= form.date_select :date_taken, required: true %>
+          </div>
+
+          <div class="field">
+            <%= form.text_area :journal_entry, placeholder: "Journal entry", required: true, style: "min-height: 240px;" %>
+          </div>
+
+          <div class="actions">
+            <%= form.submit "Update photo", class: "save-one-photo-btn", style: "margin-bottom: 20px; margin-top: 20px;" %>
+            <%= link_to 'Back', photos_path, class: "back-btn" %>
+          </div>
+        <% end %>
+      </div>
     </div>
-  <% end %>
-
-  <div class="field"> <%# temp note: undefined class tbc%>
-    <%= form.label :title %>
-    <%= form.text_field :title %>
   </div>
-
-  <div>
-    <%# might need to be changed %>
-    <%= form.label :image %>
-    <%= form.file_field :image %>
-  </div>
-
-  <div class="field">
-    <%= form.label :journal_entry %>
-    <%= form.text_area :journal_entry %>
-  </div>
-
-  <div class="field">
-    <%= form.label :date_taken %>
-    <%= form.date_select :date_taken %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
-
-<%= link_to 'Back', photos_path %>

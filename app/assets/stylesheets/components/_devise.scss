@@ -1,0 +1,175 @@
+.devise-container{
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two columns of equal width */
+}
+
+.child-container { // shared with new_photo form
+  padding: 15px;
+}
+
+.left-devise-container{
+  margin-left: 15px;
+  max-width: 300px;
+  color: $orange;
+}
+
+.right-devise-container{
+  max-width: 400px;
+}
+
+.form-inputs {
+  margin-bottom: 1.5rem;
+}
+
+.form-inputs label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: $orange;
+}
+
+.form-inputs input[type="text"],
+.form-inputs input[type="password"],
+.form-inputs input[type="email"] {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid $orange;
+  border-radius: 50px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.form-inputs input[type="text"]:focus,
+.form-inputs input[type="password"]:focus,
+.form-inputs input[type="email"]:focus {
+  border-color: $purple;
+  outline: none;
+}
+
+.form-text {
+  color: $orange;
+}
+
+.form-actions {
+  text-align: center;
+}
+
+.devise-btn {
+  background-color: $orange;
+  color: white;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.devise-login-btn {
+  margin-top: 40px;
+}
+
+.devise-signup-btn {
+  margin-top: 25px;
+}
+
+.devise-btn:hover {
+  background-color: $purple;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .devise-container {
+    grid-template-columns: 1fr; /* Changes to single column for screens <= 768px wide */
+  }
+  .left-devise-container,
+  .right-devise-container {
+    max-width: none;
+    margin-left: 0;
+  }
+
+  .child-container{
+    padding: 25px;
+  }
+}
+
+/* TOGGLE FOR REMEMBER ME */
+.toggle {
+  position: absolute;
+  transform: scale(0);
+}
+
+.toggle + label {
+  position: relative;
+  display: inline-block;
+  padding-left: 50px; // distance from margin to "Remember me"
+  margin-left: 0; /* removes left margin */
+}
+
+.toggle + label::before {
+  content: '';
+  display: block;
+  position: absolute;
+  cursor: pointer;
+  width: 36px;
+  height: 20px;
+  top: 0;
+  left: 0;
+  background-color: #EAEAEA;
+  border-radius: 50rem;
+}
+
+.toggle:checked + label::before {
+  background-color: $orange;
+}
+
+.toggle + label::after {
+  content: '';
+  display: block;
+  position: absolute;
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  top: 2px;
+  left: 2px;
+  background-color: white;
+  border-radius: 50%;
+  transition: left 0.2s ease;
+}
+
+.toggle:checked + label::after {
+  left: 18px;
+}
+
+.form-check {
+  margin-left: 0;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.input-with-error {
+  color: black; /* or any color you prefer */
+}
+
+/* DEVISE LINKS */
+.custom-link-devise {
+  color: $orange;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  opacity: 0.5;
+  position: relative; /* For the underline */
+
+  &:hover {
+    color: $orange;
+    opacity: 1;
+  }
+
+  &::after { /* Underline */
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 1px;
+    background-color: $orange;
+    opacity: 1;
+  }
+}

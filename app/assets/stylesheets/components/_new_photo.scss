@@ -1,0 +1,326 @@
+/* FOR 8 PHOTOS */
+.full-form-photos-container {
+  margin: 0px 32px 20px 32px; /* top, right, bottom, left */
+}
+
+#welcome-message {
+  color: $orange;
+  font-size: 1.5rem;
+  margin-bottom: 40px;
+  text-align: end;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columns */
+  grid-template-rows: repeat(2, 1fr); /* 2 rows */
+  grid-gap: 50px;
+  margin-bottom: 40px;
+  margin-top: 50px;
+}
+
+.save-eight-photos-btn {
+  background-color: $orange;
+  color: white;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: $purple;
+    color: white;
+  }
+}
+
+.save-one-photo-btn {
+  display: block;
+  margin-bottom: 20px; // not working
+  margin-top: 20px; // not working
+  background-color: $orange;
+  color: white;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: $purple;
+    color: white;
+  }
+}
+
+  /* MEDIA QUERIES */
+  /* For tablets */
+  @media (max-width: 1401px) {
+    .grid-container {
+      grid-template-columns: repeat(3, 1fr); /* 3 columns */
+      grid-template-rows: repeat(3, 1fr); /* 3 rows */
+    }
+  }
+
+  /* For smaller tablets */
+  @media (max-width: 1048px) {
+    .grid-container {
+      grid-template-columns: repeat(2, 1fr); /* 2 columns */
+      grid-template-rows: repeat(4, 1fr); /* 4 rows */
+    }
+  }
+
+  @media (max-width: 768px) {
+    #welcome-message{
+      font-size: 1rem;
+    }
+  }
+  /* For iPhone */
+  @media (max-width: 708px) {
+    .grid-container {
+      grid-template-columns: repeat(1, 1fr); /* 1 column */
+      grid-template-rows: repeat(8, 1fr); /* 8 rows */
+    }
+
+    #welcome-message{
+      font-size: 0.75rem;
+    }
+  }
+
+/* FOR 1 PHOTO - New photo + Edit */
+.container-new {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two columns of equal width */
+}
+
+.right-one-form-container{
+  max-width: 500px;
+}
+
+.child-container img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.right-one-form-container form {
+  width: 100%; /* Ensure the form fills its container's width */
+  max-width: 500px; /* Limit the maximum width of the form */
+  margin: 0 auto; /* Center the form horizontally */
+}
+
+@media (max-width: 966px) {
+  .container-new {
+    grid-template-columns: 1fr; /* Single column layout */
+  }
+
+  .no-padding {
+    padding: 0;
+  }
+
+  .no-padding-left-right {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+/* FORM FOR NEW PHOTO AND EDIT PHOTO */
+// All fields
+.field input::placeholder,
+.field input::-webkit-input-placeholder {
+  color: $orange;
+}
+
+// Title for 1-photo form
+.field input[type="text"].single-photo-title {
+  padding: 10px 15px;
+  border: 1px solid $orange;
+  border-radius: 20px;
+}
+
+// Title for 8-photo form
+.photo-number {
+  color: $orange;
+  font-family: "Pilowlava", sans-serif;
+  font-size: 60px;
+  margin-right: 10px; /* Spacing between the photo number and the text field */
+}
+
+.field {
+  position: relative;
+}
+
+.field input[type="text"] {
+  width: 100%;
+  padding: 0px 0px;
+  border: none;
+  font-size: 28px;
+  transition: border-color 0.3s ease;
+  margin-bottom: 10px;
+  color: $purple;
+  background-color: transparent;
+
+  &:focus {
+    border-color: $purple;
+    color: $purple;
+    outline: none;
+  }
+}
+
+.field input[type="text"]:focus {
+  outline: none; /* Removing default focus outline */
+}
+
+.field input[type="text"] + .title-border {
+  position: absolute;
+  bottom: 11.5%; /* Position the border at the bottom */
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: $orange; /* Color of the border */
+}
+
+.field input[type="text"]:focus + .title-border {
+  background-color: $purple;
+}
+
+.field input[type="text"]:valid + .title-border {
+  background-color: $purple; /* Style for title-border when input is filled out */
+}
+
+/* Style for title-border when input is empty and required */
+.field input[type="text"]:required:invalid + .title-border {
+  background-color: $red; /* Color of the border when input is invalid */
+}
+
+// Image File Uploader
+.input[type=file] {
+  color: $orange;
+  margin-bottom: 25px;
+}
+
+input[type="file" i] { /* Links to the original "Choose File" input" */
+  color: $orange; // .field input[type="file"] // same as input[type="file" i]
+  margin-bottom: 50px;
+}
+  // from previous version:
+  // .choose-image-button::before {
+  //   border-radius: 2.5px;
+  //   border: 1px solid $orange;
+  //   background-color: white;
+  //   padding: 2px 5px 2px 7px;
+  // }
+
+input[type=file]::file-selector-button {
+  margin-right: 15px; /* for some distance from file input */
+  border: none;
+  background: $orange;
+  padding: 10px 20px;
+  border-radius: 20px; // instead of 10px or original 2.5px
+  color: #fff;
+  cursor: pointer;
+}
+
+input[type=file]::file-selector-button:hover {
+  background: $light-orange;
+}
+
+.choose-one-photo-btn input[type="file"]::file-selector-button {
+  border: 1px solid $orange;
+  background-color: white;
+  color: $orange;
+}
+
+.choose-one-photo-btn input[type="file"]::file-selector-button:hover {
+  background: $white;
+  border: 1px solid $dark-orange;
+  color: $dark-orange;
+}
+
+// Date taken
+.field label {
+  color: $orange;
+}
+
+.field select {
+  margin-top: 10px;
+  color: $orange;
+  padding: 10px 15px;
+  border: 1px solid $orange;
+  border-radius: 20px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  margin-bottom: 10px;
+
+  &:focus {
+    border-color: $purple;
+    color: $purple;
+    outline: none;
+  }
+}
+
+.field select.valid {
+  border: 1px solid $purple;
+  color: $purple;
+}
+
+// Journal Entry
+.field textarea {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid $orange;
+  border-radius: 20px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  color: $purple;
+
+  &:focus {
+    border-color: $purple;
+    color: $orange;
+    outline: none;
+  }
+}
+
+.field textarea::placeholder,
+.field textarea::-webkit-input-placeholder {
+  color: $orange;
+}
+
+.field textarea:valid {
+  border: 1px solid $purple;
+}
+
+/* Centering Buttons */
+.actions {
+  text-align: center; /* Center align the buttons */
+}
+
+.actions input[type="submit"],
+.actions a {
+  margin: 0 auto; /* Center the buttons horizontally */
+}
+
+.back-btn {
+  color: $orange;
+  opacity: 0.5;
+  text-decoration: none;
+  position: relative; /* For the underline */
+
+  &:hover {
+    color: $orange;
+    opacity: 1;
+  }
+
+  &::after { /* Underline */
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 2px;
+    background-color: $orange;
+    opacity: 1;
+  }
+}
+
+/* ERROR STYLING */
+// TBD
