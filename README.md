@@ -23,5 +23,5 @@ Start your server with ./bin/dev.
 - Form Helper styling
 
 **Thank you to...**
-- [@disinnnn]([url](https://twitter.com/disinnnn)https://twitter.com/disinnnn) on Twitter for making great SVGs
+- [@disinnnn](https://twitter.com/disinnnn) on Twitter for making great SVGs
 - Font makers credit: Pilowlava by Anton Moglia, Jérémy Landes, with the contribution of Maksym Kobuzan. Distributed by velvetyne.fr.
