@@ -12,6 +12,7 @@ For me, it was also a way to master the fundamentals of Three JS before using it
 
 Leveraging a modern tech stack, Memory Lab combines:
 
+* <b>Ruby on Rails</b>, the full stack web framework with a <b>PostgreSQL</b> database.
 * <b>WebGL/Three.JS</b> for creating and rendering the 3D scenes.
 * <b>esbuild</b> and <b>jsbundling-rails</b> for efficient JavaScript bundling and module management.
 * <b>Active Storage</b> and <b>Cloudinary</b> for handling user-uploaded images.
